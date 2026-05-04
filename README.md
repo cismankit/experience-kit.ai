@@ -21,6 +21,18 @@ npm run dev
 
 Deployment and environment notes live in [`web/README.md`](./web/README.md).
 
+## Push to GitHub
+
+This repo is ready to connect to a new GitHub remote (no remote is configured until you add one):
+
+```bash
+cd /path/to/experiencekit-ai
+git remote add origin https://github.com/YOUR_ORG/experiencekit-ai.git
+git push -u origin main
+```
+
+On Vercel, set the project **Root Directory** to `web`.
+
 ## Conventions
 
 - Prefer confirming live positioning in a browser when the production site is available; capture notes under `docs/`.
