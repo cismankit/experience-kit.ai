@@ -35,8 +35,8 @@ If `origin` already exists, use `git remote set-url origin https://github.com/ci
 
 ### Vercel (important)
 
-- **Recommended:** set the project **Root Directory** to the **repository root** (`.` / empty). The repo-level [`vercel.json`](./vercel.json) runs `npm ci` and `npm run build` **inside `web/`**, so production builds even if the dashboard was previously pointed at the wrong folder.
-- **Alternative:** set **Root Directory** to **`web`** only. In that case Vercel scopes the project to `web/` and typically **ignores** the repo-level `vercel.json`; rely on [`web/vercel.json`](./web/vercel.json) instead.
+- **Recommended:** set the project **Root Directory** to the **repository root** (`.` / empty). The repo-level [`package.json`](./package.json) lists **`next`** so Vercel’s framework detector succeeds, and **`postinstall`** runs **`npm install --prefix web`** so the real app dependencies install in **`web/`**. **`npm run build`** delegates to **`web`** (`npm run build --prefix web`).
+- **Alternative:** set **Root Directory** to **`web`** only. Vercel then installs and builds only inside **`web/`**; the root **`package.json`** is unused. Use [`web/vercel.json`](./web/vercel.json) for any Vercel overrides scoped to that app.
 - If **`*.vercel.app` or your domain returns 404** but the deployment shows **Ready**, open **Deployments →** that deployment → confirm it is **Production** and not only Preview; turn off **Deployment Protection** for production if preview URLs return **401**.
 - Cloudflare: use **SSL/TLS → Full (strict)** when a record is **Proxied** (orange cloud).
 

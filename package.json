@@ -1,0 +1,15 @@
+{
+  "name": "experiencekit-ai",
+  "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "description": "Monorepo root for Vercel. The Next.js app and real dependencies live in web/.",
+  "scripts": {
+    "build": "npm run build --prefix web",
+    "postinstall": "npm install --prefix web"
+  },
+  "dependencies": {
+    "next": "16.2.4"
+  }
+}
