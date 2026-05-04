@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function CompactCtaSection() {
   return (
     <section
-      className="scroll-mt-28 border-b border-slate-200/80 bg-gradient-to-br from-amber-50/90 via-white to-stone-50 py-12 sm:py-14"
+      className="scroll-mt-28 border-b border-slate-200/80 bg-gradient-to-br from-amber-50/90 via-white to-stone-50 py-10 sm:py-12"
       aria-labelledby="compact-cta-heading"
     >
       <Container>
@@ -19,23 +19,22 @@ export function CompactCtaSection() {
                 id="compact-cta-heading"
                 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl"
               >
-                Start building better learning experiences.
+                Ready when your learners are.
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
-                Turn curiosity into capability—guided, AI-powered, hands-on kits for schools, parents,
-                and future-ready learners.
+                Browse SKUs, track shipments, or pull us in for a scoped pilot—same stack, no runaround.
               </p>
             </div>
-            <div className="mt-6 flex flex-col gap-2 sm:mt-0 sm:min-w-[12rem]">
-              <Button variant="primary" size="md" href="#contact" className="w-full sm:w-auto">
-                Request a Demo
+            <div className="mt-5 flex flex-col gap-2 sm:mt-0 sm:min-w-[11rem]">
+              <Button variant="primary" size="md" href="/kits" className="w-full sm:w-auto">
+                Shop kits
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Button>
-              <Button variant="secondary" size="md" className="w-full sm:w-auto" href="#contact">
-                Join the Pilot
+              <Button variant="outline" size="md" className="w-full bg-white sm:w-auto" href="/track">
+                Track order
               </Button>
-              <Button variant="outline" size="md" className="w-full bg-white sm:w-auto" href="#kits">
-                Explore Kits
+              <Button variant="secondary" size="md" className="w-full sm:w-auto" href="/#contact">
+                Contact sales
               </Button>
             </div>
           </div>

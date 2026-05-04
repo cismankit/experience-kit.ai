@@ -37,7 +37,7 @@ npm run start
 
 | Path | Purpose |
 |------|---------|
-| `src/app/` | App Router: `layout.tsx`, `page.tsx`, `globals.css`, `robots.ts`, `sitemap.ts`, `opengraph-image.tsx` |
+| `src/app/` | App Router: `layout.tsx`, `page.tsx`, `kits/`, `track/`, `orders/`, `api/assistant`, `api/track`, `globals.css`, `robots.ts`, `sitemap.ts`, `opengraph-image.tsx` |
 | `src/components/` | UI primitives, site chrome, motion helpers, and landing sections |
 | `src/components/sections/` | Consolidated home sections (fewer, denser blocks—see `landing-page.tsx`) |
 | `src/lib/` | Utilities (`cn`), shared UI helpers (`cardSurface`), navigation constants |

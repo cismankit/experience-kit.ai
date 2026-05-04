@@ -40,11 +40,11 @@ export function StickyMobileCta() {
       style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
     >
       <div className="mx-auto flex w-full max-w-lg gap-2">
-        <Button variant="primary" size="md" className="min-h-12 flex-1 shadow-md" href="#contact">
-          Request a Demo
+        <Button variant="primary" size="md" className="min-h-12 flex-1 shadow-md" href="/kits">
+          Shop
         </Button>
-        <Button variant="outline" size="md" className="min-h-12 flex-1 bg-white" href="#kits">
-          Explore Kits
+        <Button variant="outline" size="md" className="min-h-12 flex-1 bg-white" href="/track">
+          Track
         </Button>
       </div>
     </nav>

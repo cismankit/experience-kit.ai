@@ -9,26 +9,25 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="scroll-mt-28 border-t border-slate-200/80 bg-gradient-to-b from-stone-50 to-white py-14 sm:py-16 lg:py-20"
+      className="scroll-mt-28 border-t border-slate-200/80 bg-gradient-to-b from-stone-50 to-white py-12 sm:py-14 lg:py-16"
       aria-labelledby="contact-heading"
     >
       <Container>
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-12">
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-10">
           <FadeIn>
             <SectionHeading
               id="contact-heading"
-              eyebrow="Contact"
-              title="Tell us what you’re building"
+              eyebrow="Support"
+              title="Quotes, pilots, and custom waves"
               description={
-                <p>
-                  A few lines is enough—role, goals, timeline. We’ll reply with practical next steps
-                  (demo, pilot, or the right kit path).
+                <p className="max-w-md">
+                  Drop role, kit interest, and timeline—we route to the right desk the same day when possible.
                 </p>
               }
             />
-            <p className="mt-6 text-sm text-slate-600">
-              Same form for <strong className="text-slate-800">Request a Demo</strong> or{" "}
-              <strong className="text-slate-800">Join the Pilot</strong>—say which in your message.
+            <p className="mt-4 text-sm text-slate-600">
+              Mention <strong className="text-slate-800">district</strong>, <strong className="text-slate-800">PO</strong>, or{" "}
+              <strong className="text-slate-800">pilot</strong> in the message so finance and field teams see it immediately.
             </p>
           </FadeIn>
           <FadeIn delay={0.06}>

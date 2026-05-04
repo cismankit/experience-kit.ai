@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Package, Radar } from "lucide-react";
 import { AmbientOrbs } from "@/components/motion/ambient-orbs";
 import { HeroScene } from "@/components/motion/hero-scene";
 import { Button } from "@/components/ui/button";
@@ -9,11 +10,7 @@ import { Container } from "@/components/container";
 import { cn } from "@/lib/utils";
 import { cardSurface } from "@/lib/ui";
 
-const bullets = [
-  "Built for schools, parents, and future-ready learners",
-  "Structured for practical, guided learning",
-  "Designed to turn curiosity into capability",
-] as const;
+const chips = ["Transparent manifests", "Track every shipment", "AI copilot included"] as const;
 
 export function HeroSection() {
   const reduce = useReducedMotion();
@@ -28,118 +25,107 @@ export function HeroSection() {
         className="pointer-events-none absolute inset-x-0 -top-40 z-[1] h-[32rem] bg-[radial-gradient(ellipse_85%_55%_at_50%_-5%,rgba(251,191,36,0.28),transparent_58%)]"
         aria-hidden
       />
-      <Container className="relative z-10 py-14 sm:py-16 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] lg:items-center lg:gap-16">
+      <Container className="relative z-10 py-12 sm:py-14 lg:py-16">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center lg:gap-12">
           <div>
             <motion.p
-              className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-800 sm:text-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-amber-200/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-900 shadow-sm"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
             >
-              Learn by doing. Build by exploring. Earn by applying.
+              <Radar className="h-3.5 w-3.5" aria-hidden />
+              Ops-ready commerce
             </motion.p>
             <motion.h1
               id="hero-heading"
-              className="mt-4 text-balance text-[2.1rem] font-semibold leading-[1.12] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.15rem]"
+              className="mt-4 text-balance text-[2rem] font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.05rem]"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.04 }}
             >
-              AI-powered kits that turn learning into{" "}
+              Kits built for velocity,{" "}
               <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                hands-on experience
+                shipped with precision
               </span>
               .
             </motion.h1>
             <motion.p
-              className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-slate-600 sm:text-xl"
+              className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-slate-600 sm:text-lg"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.1 }}
+              transition={{ duration: 0.45, delay: 0.08 }}
             >
-              From curiosity to capability: guided builds, AI support when it helps, and outcomes you
-              can show—not passive content.
+              See exactly what is inside each SKU, spin up quotes, track fulfillment, and let learners loose on tactile +
+              AI workflows—all from one surface.
             </motion.p>
             <motion.ul
-              className="mt-8 max-w-xl space-y-3 text-sm leading-relaxed text-slate-700 sm:text-base"
+              className="mt-6 flex flex-wrap gap-2"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.14 }}
+              transition={{ duration: 0.45, delay: 0.12 }}
             >
-              {bullets.map((t) => (
-                <li key={t} className="flex gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-900 ring-1 ring-amber-200/90">
-                    <Check className="h-3.5 w-3.5" aria-hidden />
-                  </span>
-                  <span>{t}</span>
+              {chips.map((t) => (
+                <li
+                  key={t}
+                  className="rounded-full border border-slate-200/90 bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm"
+                >
+                  {t}
                 </li>
               ))}
             </motion.ul>
             <motion.div
-              className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
+              className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.18 }}
+              transition={{ duration: 0.45, delay: 0.16 }}
             >
-              <Button variant="primary" size="lg" className="w-full min-[480px]:w-auto" href="#contact">
-                Request a Demo
+              <Button variant="primary" size="lg" className="w-full min-[480px]:w-auto" href="/kits">
+                Shop kits
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Button>
-              <Button variant="outline" size="lg" className="w-full min-[480px]:w-auto" href="#kits">
-                Explore Kits
+              <Button variant="outline" size="lg" className="w-full min-[480px]:w-auto bg-white" href="/track">
+                <Package className="h-4 w-4" aria-hidden />
+                Track order
               </Button>
-              <Button variant="secondary" size="lg" className="w-full min-[480px]:w-auto" href="#contact">
-                Join the Pilot
+              <Button variant="secondary" size="lg" className="w-full min-[480px]:w-auto" href="/#contact">
+                Talk to sales
               </Button>
             </motion.div>
-            <motion.p
-              className="mt-6 text-xs font-medium uppercase tracking-wider text-slate-500"
-              initial={reduce ? { opacity: 1 } : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.22 }}
-            >
-              No gimmicks—just guided, outcome-driven learning you can run with confidence.
-            </motion.p>
           </div>
           <motion.div
-            className="relative flex flex-col gap-8"
+            className="relative flex flex-col gap-6"
             initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.08 }}
           >
             <div className="relative">
               <HeroScene />
             </div>
-            <div
-              className={cn(
-                cardSurface(),
-                "rounded-3xl p-6 shadow-lg shadow-slate-900/10 sm:p-8",
-              )}
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                At a glance
+            <div className={cn(cardSurface(), "rounded-3xl p-5 shadow-lg shadow-slate-900/10 sm:p-6")}>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Live desk</p>
+              <p className="mt-2 text-base font-semibold leading-snug text-slate-900 sm:text-lg">
+                Orders · tracking · copilot—one stack for procurement and learners.
               </p>
-              <p className="mt-3 text-lg font-semibold leading-snug text-slate-900 sm:text-xl">
-                Kits + challenges + AI support—structured for real outcomes.
-              </p>
-              <div className="mt-6 grid gap-3 border-t border-slate-100 pt-6 text-sm text-slate-600">
-                <div className="flex justify-between gap-4 border-b border-slate-100 pb-3">
-                  <span className="text-slate-500">Focus</span>
-                  <span className="text-right font-semibold text-slate-900">Experience-led learning</span>
-                </div>
-                <div className="flex justify-between gap-4 border-b border-slate-100 pb-3">
-                  <span className="text-slate-500">Built for</span>
-                  <span className="max-w-[12rem] text-right font-semibold text-slate-900">
-                    Schools, homes, future-ready ecosystems
-                  </span>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span className="text-slate-500">Motion</span>
-                  <span className="max-w-[12rem] text-right font-semibold text-slate-900">
-                    Explore → build → apply
-                  </span>
-                </div>
+              <div className="mt-4 grid gap-2 text-sm text-slate-600 sm:grid-cols-3">
+                <Link
+                  href="/orders"
+                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200"
+                >
+                  Manage orders
+                </Link>
+                <Link
+                  href="/track"
+                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200"
+                >
+                  Track status
+                </Link>
+                <Link
+                  href="/#platform"
+                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200"
+                >
+                  Platform tour
+                </Link>
               </div>
             </div>
           </motion.div>

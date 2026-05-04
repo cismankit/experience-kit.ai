@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS } from "@/lib/nav";
+import { HEADER_NAV } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/container";
@@ -27,11 +27,11 @@ export function SiteHeader() {
       )}
     >
       <div className="border-b border-slate-200/80 bg-slate-950 px-4 py-2.5 text-center text-xs font-medium leading-snug text-amber-100 sm:text-sm">
-        <span className="text-amber-50/90">Future-ready learning, now made practical.</span>
+        <span className="text-amber-50/90">Ship-ready kits · Track every order · Copilot in the corner</span>
       </div>
       <Container className="flex h-14 items-center justify-between gap-3 sm:h-16 sm:gap-4">
         <Link
-          href="#top"
+          href="/"
           className="flex min-w-0 shrink-0 items-center gap-2 text-sm font-semibold tracking-tight text-slate-900 sm:text-base"
         >
           <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 text-sm font-bold text-slate-950 shadow-sm">
@@ -41,7 +41,7 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary">
-          {NAV_LINKS.map((item) => (
+          {HEADER_NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -53,14 +53,14 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" size="sm" href="#contact" className="hidden xl:inline-flex">
-            Join the Pilot
+          <Button variant="ghost" size="sm" href="/orders" className="hidden xl:inline-flex">
+            Manage
           </Button>
-          <Button variant="outline" size="sm" href="#kits">
-            Explore Kits
+          <Button variant="outline" size="sm" href="/track">
+            Track
           </Button>
-          <Button variant="primary" size="sm" href="#contact">
-            Request a Demo
+          <Button variant="primary" size="sm" href="/kits">
+            Shop kits
           </Button>
         </div>
 
@@ -82,7 +82,7 @@ export function SiteHeader() {
           className="max-h-[min(70vh,calc(100dvh-8rem))] overflow-y-auto border-t border-slate-200 bg-white lg:hidden"
         >
           <Container className="flex flex-col gap-1 py-4">
-            {NAV_LINKS.map((item) => (
+            {HEADER_NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -93,19 +93,17 @@ export function SiteHeader() {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2 border-t border-slate-100 pt-4">
-              <Button
-                variant="outline"
-                className="w-full"
-                href="#kits"
-                onClick={() => setOpen(false)}
-              >
-                Explore Kits
+              <Button variant="outline" className="w-full" href="/track">
+                Track order
               </Button>
-              <Button variant="primary" className="w-full" href="#contact" onClick={() => setOpen(false)}>
-                Request a Demo
+              <Button variant="secondary" className="w-full" href="/orders">
+                My orders
               </Button>
-              <Button variant="ghost" className="w-full" href="#contact" onClick={() => setOpen(false)}>
-                Join the Pilot
+              <Button variant="primary" className="w-full" href="/kits">
+                Shop kits
+              </Button>
+              <Button variant="ghost" className="w-full" href="/#contact">
+                Support
               </Button>
             </div>
           </Container>

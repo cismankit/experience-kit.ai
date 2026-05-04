@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SkipLink } from "@/components/skip-link";
+import { SiteChrome } from "@/components/site-chrome";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,7 +18,7 @@ const siteUrl = "https://experiencekit.ai";
 
 const metaTitle = "ExperienceKit.ai | AI-Powered Learning Kits";
 const metaDescription =
-  "ExperienceKit.ai offers AI-powered kits that turn learning into hands-on experience—guided, practical, and built for schools, parents, educators, and future-ready learners.";
+  "ExperienceKit.ai ships premium AI-powered learning kits with transparent manifests, order tracking, and a built-in copilot—built for schools, homes, and future-ready programs.";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -121,7 +122,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <div className="relative z-[1] flex min-h-full flex-1 flex-col">{children}</div>
+        <div className="relative z-[1] flex min-h-full flex-1 flex-col">
+          <SiteChrome>{children}</SiteChrome>
+        </div>
       </body>
     </html>
   );

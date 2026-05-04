@@ -4,28 +4,20 @@ import { SectionHeading } from "@/components/section-heading";
 
 const faqs = [
   {
-    q: "What is ExperienceKit.ai?",
-    a: "Smart learning kits that combine hands-on work, guided challenges, and AI support so learners explore, build, and apply—not just consume.",
+    q: "What ships in each kit?",
+    a: "Every SKU lists physical components, challenge decks, QR-linked journeys, and AI touchpoints—no opaque bundles.",
   },
   {
-    q: "Who is it for?",
-    a: "Schools, parents, educators, and learners who want practical, experience-led learning with a premium, grounded tone.",
+    q: "How do tracking and orders work today?",
+    a: "Track uses your order ID + email (demo lookup until your OMS webhooks land). Orders shows a browser-based desk preview—swap in auth when ready.",
   },
   {
-    q: "Only for schools?",
-    a: "No—classrooms and structured home learning both work. Kits stay coherent across contexts.",
+    q: "Can districts standardize across schools?",
+    a: "Yes—use Support with cohort sizes and timelines. We stage waves, spares, and educator enablement in the same motion as classroom pilots.",
   },
   {
-    q: "What does AI do?",
-    a: "Scaffolding, explanations, and reflection prompts that enrich the hands-on arc—without replacing the learner’s thinking.",
-  },
-  {
-    q: "Demo or pilot for schools?",
-    a: "Yes. Use the contact form with your goals—we’ll reply with clear next steps.",
-  },
-  {
-    q: "How do I get started?",
-    a: "Skim the kit journey, then message us with your role and outcome. We’ll point you to the right path.",
+    q: "What does the copilot handle?",
+    a: "Logistics, kit fit, and rollout questions with short answers. It routes to humans for quotes, legal, and custom SKUs.",
   },
 ] as const;
 
@@ -33,7 +25,7 @@ export function FaqSection() {
   return (
     <section
       id="faq"
-      className="scroll-mt-28 bg-white py-14 sm:py-16 lg:py-20"
+      className="scroll-mt-28 bg-white py-12 sm:py-14 lg:py-16"
       aria-labelledby="faq-heading"
     >
       <Container>
@@ -41,11 +33,11 @@ export function FaqSection() {
           <SectionHeading
             id="faq-heading"
             eyebrow="FAQ"
-            title="Quick answers"
-            description={<p>Short responses—expand only what you need.</p>}
+            title="Straight answers"
+            description={<p>Four high-signal questions—everything else goes to Support.</p>}
           />
         </FadeIn>
-        <div className="mt-8 divide-y divide-slate-200 rounded-2xl border border-slate-200/90 bg-stone-50/50 lg:mt-10">
+        <div className="mt-6 divide-y divide-slate-200 rounded-2xl border border-slate-200/90 bg-stone-50/50 lg:mt-8">
           {faqs.map((item, i) => (
             <FadeIn key={item.q} delay={0.02 * i}>
               <details className="group p-4 sm:p-5">

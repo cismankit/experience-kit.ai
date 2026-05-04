@@ -1,21 +1,21 @@
-import { GraduationCap, Home, School } from "lucide-react";
+import { Box, Cpu, Truck } from "lucide-react";
 import { Container } from "@/components/container";
 
 const items = [
   {
-    label: "Schools",
-    text: "Classrooms & programs",
-    icon: School,
+    label: "Manifested SKUs",
+    text: "Every part listed before checkout",
+    icon: Box,
   },
   {
-    label: "Homes",
-    text: "Guided family learning",
-    icon: Home,
+    label: "AI + physical",
+    text: "Scaffold without stealing the build",
+    icon: Cpu,
   },
   {
-    label: "Learners",
-    text: "Curiosity → capability",
-    icon: GraduationCap,
+    label: "Logistics aware",
+    text: "Track + reorder in the same UI",
+    icon: Truck,
   },
 ] as const;
 
@@ -23,10 +23,10 @@ export function TrustIconsStrip() {
   return (
     <section
       className="border-b border-slate-200/70 bg-white/80 py-4 backdrop-blur-sm sm:py-5"
-      aria-label="Who ExperienceKit.ai is designed for"
+      aria-label="ExperienceKit fulfillment highlights"
     >
       <Container>
-        <ul className="grid gap-4 sm:grid-cols-3 sm:gap-6">
+        <ul className="grid gap-3 sm:grid-cols-3 sm:gap-5">
           {items.map((item) => (
             <li
               key={item.label}
@@ -42,9 +42,6 @@ export function TrustIconsStrip() {
             </li>
           ))}
         </ul>
-        <p className="mt-5 text-center text-xs font-medium uppercase tracking-wider text-slate-500">
-          Structured for practical, guided learning · Designed to turn curiosity into capability
-        </p>
       </Container>
     </section>
   );
