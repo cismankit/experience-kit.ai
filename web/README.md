@@ -70,11 +70,13 @@ Update `siteUrl` and `metadataBase` in `layout.tsx` (and the same base in `robot
 
 1. Push this repository to GitHub/GitLab/Bitbucket.
 2. In [Vercel](https://vercel.com), create a new project and import the repo.
-3. Set **Root Directory** to `web` (the monorepo parent also holds `docs/` and `content/`).
-4. Framework preset: **Next.js**. Build command: `npm run build`, output: Next default.
+3. **Root Directory — pick one:**
+   - **Monorepo root (`.` / empty):** uses the repo-level [`vercel.json`](../vercel.json) to `cd web && npm ci` and `npm run build`. Use this if production was **404** while the dashboard pointed at the wrong folder.
+   - **`web`:** Vercel’s cwd is `web/`; only [`vercel.json`](./vercel.json) here applies. Build/install stay `npm ci` / `npm run build` in that folder.
+4. Framework preset: **Next.js** (auto when `web/package.json` has `next`).
 5. Add your production domain (`experiencekit.ai`) under **Domains** and configure DNS per Vercel.
 
-`web/vercel.json` pins the framework and build/install commands for consistency on Vercel.
+`web/vercel.json` pins the framework and build/install when the project root is **`web/`**.
 
 **Optional — Vercel plugin for coding agents** ([docs](https://vercel.com/docs/agent-resources/vercel-plugin)):
 
@@ -108,7 +110,7 @@ If the **apex** domain responds but **`www`** never loads, the apex is probably 
 2. Add a **`www`** record: type **CNAME**, name **`www`**, target as Vercel instructs, **DNS only** / not proxied if Vercel asks for it during verification.
 3. Wait for TTL, then test `https://www.your-domain/` in an incognito window.
 
-**Project root:** the app must build from **`web/`**. If the Vercel project root is the monorepo root, the deploy will be wrong—set **Root Directory** to `web` and redeploy.
+**Project root:** the Next app always lives in **`web/`** in Git. Vercel must either build that folder via **Root Directory = `web`**, or via **Root Directory = repo root** plus the repo-level `vercel.json` that runs commands in `web/`.
 
 **CLI “Unexpected error” on deploy:** open the deployment **Inspect** link from the CLI output in the Vercel dashboard and read **Build** / **Functions** logs; retry deploy or use **Redeploy** from the latest successful Git commit.
 
