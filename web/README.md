@@ -100,6 +100,18 @@ After first deploy, confirm:
 - `https://your-domain/sitemap.xml`
 - `https://your-domain/opengraph-image` (or use social debuggers for OG/Twitter previews)
 
+### “Site not loading” (apex works, `www` spins or fails)
+
+If the **apex** domain responds but **`www`** never loads, the apex is probably **redirecting to `www`** while **`www` is missing or wrong in DNS**. In your DNS host (often Cloudflare):
+
+1. Vercel → Project → **Domains** → copy the exact **CNAME** target Vercel shows for `www` (commonly `cname.vercel-dns.com` or a `*.vercel.app` target).
+2. Add a **`www`** record: type **CNAME**, name **`www`**, target as Vercel instructs, **DNS only** / not proxied if Vercel asks for it during verification.
+3. Wait for TTL, then test `https://www.your-domain/` in an incognito window.
+
+**Project root:** the app must build from **`web/`**. If the Vercel project root is the monorepo root, the deploy will be wrong—set **Root Directory** to `web` and redeploy.
+
+**CLI “Unexpected error” on deploy:** open the deployment **Inspect** link from the CLI output in the Vercel dashboard and read **Build** / **Functions** logs; retry deploy or use **Redeploy** from the latest successful Git commit.
+
 ### Cloudflare (Pages / Workers)
 
 Next.js on Cloudflare usually needs an adapter (for example the **OpenNext**-based flow or **`@cloudflare/next-on-pages`**) because the default Node runtime differs from Workers. High-level steps:
