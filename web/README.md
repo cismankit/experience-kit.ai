@@ -74,6 +74,26 @@ Update `siteUrl` and `metadataBase` in `layout.tsx` (and the same base in `robot
 4. Framework preset: **Next.js**. Build command: `npm run build`, output: Next default.
 5. Add your production domain (`experiencekit.ai`) under **Domains** and configure DNS per Vercel.
 
+`web/vercel.json` pins the framework and build/install commands for consistency on Vercel.
+
+**Optional — Vercel plugin for coding agents** ([docs](https://vercel.com/docs/agent-resources/vercel-plugin)):
+
+```bash
+printf 'y\n' | npx plugins add vercel/vercel-plugin
+```
+
+Restart agent tools in Cursor after install. Targets may show “Claude Code”; Cursor still receives the marketplace bundle.
+
+**CLI deploy** (when you are logged in: `npx vercel login`):
+
+```bash
+cd web
+npx vercel link    # once per machine
+npx vercel deploy --prod
+```
+
+For non-interactive CI, use a [Vercel token](https://vercel.com/account/tokens) and `VERCEL_TOKEN`, plus linked project env vars.
+
 After first deploy, confirm:
 
 - `https://your-domain/robots.txt`
