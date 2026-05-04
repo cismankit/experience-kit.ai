@@ -23,13 +23,15 @@ Deployment and environment notes live in [`web/README.md`](./web/README.md).
 
 ## Push to GitHub
 
-This repo is ready to connect to a new GitHub remote (no remote is configured until you add one):
+Canonical remote: **[cismankit/experience-kit.ai](https://github.com/cismankit/experience-kit.ai)**.
 
 ```bash
 cd /path/to/experiencekit-ai
-git remote add origin https://github.com/YOUR_ORG/experiencekit-ai.git
+git remote add origin https://github.com/cismankit/experience-kit.ai.git
 git push -u origin main
 ```
+
+If `origin` already exists, use `git remote set-url origin https://github.com/cismankit/experience-kit.ai.git` instead of `git remote add`.
 
 On Vercel, set the project **Root Directory** to `web`.
 
