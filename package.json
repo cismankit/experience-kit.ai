@@ -7,7 +7,7 @@
   "description": "Monorepo root for Vercel. The Next.js app and real dependencies live in web/.",
   "scripts": {
     "build": "npm run build --prefix web",
-    "postinstall": "npm install --prefix web"
+    "postinstall": "npm ci --prefix web --include=dev"
   },
   "dependencies": {
     "next": "16.2.4"
