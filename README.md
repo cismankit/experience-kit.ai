@@ -35,15 +35,17 @@ If `origin` already exists, use `git remote set-url origin https://github.com/ci
 
 ### Vercel (important)
 
-**Dashboard (Build & Deployment → Build & Development Settings):**
+Use the **Next.js app folder** as the Vercel project root. Deploying from the **repository root** (`./`) is brittle (Vercel expects **`next.config`**, **`public/`**, and **`.next`** beside the same **`package.json`**; this repo keeps the app under **`web/`**).
 
-1. **Framework Preset:** choose **Next.js**, not **Other**. **Other** makes Vercel treat the project like a static site and default to an **Output Directory** of **`public`**, which triggers **“No Output Directory named public”** for this repo — Next.js emits **`.next`**, not **`public`** at the repo root.
-2. **Output Directory:** leave **empty** (default). Do not set **`public`** unless you are intentionally deploying a static export with that folder.
-3. **Root Directory:** **`./`** (repository root) is correct for the current layout; root [`package.json`](./package.json) runs the app build via **`web/`**.
+**Dashboard → Settings → Build & Deployment (Build & Development Settings):**
 
-- **Recommended:** set the project **Root Directory** to the **repository root** (`.` / empty). Repo-root [`vercel.json`](./vercel.json) sets **`framework`** to **`nextjs`**, **`installCommand`** to **`npm ci`**, and **`buildCommand`** to **`npm run build`**. The repo-level [`package.json`](./package.json) lists **`next`** for detection, and **`postinstall`** runs **`npm ci --prefix web --include=dev`** so **`web/`** gets a full install (Tailwind/PostCSS and other **devDependencies** are required at **`next build`** time; Vercel sets **`NODE_ENV=production`** during install, which would otherwise omit them). **`npm run build`** runs **`next build`** in **`web/`**, then **copies `web/.next` → `.next`** at the repo root so Vercel’s Next preset finds the output when **Root Directory** is the monorepo root (otherwise it looks for **`.next`** next to `package.json`, not under **`web/`**).
-- **Alternative:** set **Root Directory** to **`web`** only. Vercel then installs and builds only inside **`web/`**; the root **`package.json`** and root **`vercel.json`** are ignored. Use [`web/vercel.json`](./web/vercel.json) for overrides scoped to that app.
-- **Dashboard sync:** if the UI still shows **Other** or a custom output path, use the steps above; root **`vercel.json`** should align the project, but matching the dashboard avoids confusion.
+1. **Root Directory:** set to **`web`** (click Edit, enter `web`, save). This is the **required** setting for reliable production deploys for this repository.
+2. **Framework Preset:** **Next.js** (not **Other**). **Other** looks for a static **`public`** output and breaks this app.
+3. **Output Directory:** leave **empty** (default for Next.js).
+4. **Install Command** / **Build Command:** leave **default** (overrides off) so Git-tracked [`web/vercel.json`](./web/vercel.json) applies: **`npm ci --include=dev`** (Vercel sets **`NODE_ENV=production`** during install; without **`--include=dev`**, Tailwind/PostCSS in **`devDependencies`** are skipped and **`next build`** fails) and **`npm run build`**.
+5. Save, then **Deployments → Redeploy** the latest **`main`** commit (or push a new commit). Wait until **Production** shows **Ready** and the yellow “production differs from settings” banner clears.
+
+**Local monorepo (optional):** root [`package.json`](./package.json) still supports **`npm ci`** at the repo root and **`postinstall`** / **`build`** that delegate into **`web/`** for contributors; Vercel does **not** use that file when **Root Directory** is **`web`**.
 - If **`*.vercel.app` or your domain returns 404** but the deployment shows **Ready**, open **Deployments →** that deployment → confirm it is **Production** and not only Preview; turn off **Deployment Protection** for production if preview URLs return **401**.
 - If the **apex** redirects to **`www`** but **`www` returns `NOT_FOUND`** from Vercel, **`www` is not attached to this project** (or DNS for `www` points at Vercel without the hostname being added). In Vercel → **Domains**, add **`www.experiencekit.ai`** to the same project as production and apply the **CNAME** / DNS values Vercel shows for `www` (do not use the apex nameserver target for `www`).
 - Cloudflare: use **SSL/TLS → Full (strict)** when a record is **Proxied** (orange cloud).

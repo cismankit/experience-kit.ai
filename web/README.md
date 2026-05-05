@@ -70,10 +70,8 @@ Update `siteUrl` and `metadataBase` in `layout.tsx` (and the same base in `robot
 
 1. Push this repository to GitHub/GitLab/Bitbucket.
 2. In [Vercel](https://vercel.com), create a new project and import the repo.
-3. **Root Directory — pick one:**
-   - **Monorepo root (`.` / empty):** the repo-level [`package.json`](../package.json) declares **`next`** (required for Vercel’s Next.js detection at the root) and **`postinstall`** runs **`npm install --prefix web`**. **`npm run build`** runs the Next build in **`web/`**. Do **not** point the root at **`web`** in the dashboard while also relying on this file—pick one root.
-   - **`web`:** Vercel’s cwd is `web/`; only [`vercel.json`](./vercel.json) here applies. Use **`npm ci`** / **`npm run build`** in that folder (default when the framework is detected from `web/package.json`).
-4. Framework preset: **Next.js** (auto when `web/package.json` has `next`).
+3. **Root Directory:** set to **`web`** (required). The Next app, **`next.config.ts`**, **`public/`**, and **`.next`** must share one Vercel project root; this repo keeps them under **`web/`** only.
+4. **Framework preset:** **Next.js** (not **Other**). Leave **Output Directory** empty.
 5. Add your production domain (`experiencekit.ai`) under **Domains** and configure DNS per Vercel. Add **both** **apex** and **`www`** if you redirect apex → `www`; otherwise visitors hit Vercel **`NOT_FOUND`** on `www` even when the apex record works.
 
 `web/vercel.json` pins the framework and build/install when the project root is **`web/`**.
@@ -110,7 +108,7 @@ If the **apex** domain responds but **`www`** never loads, the apex is probably 
 2. Add a **`www`** record: type **CNAME**, name **`www`**, target as Vercel instructs, **DNS only** / not proxied if Vercel asks for it during verification.
 3. Wait for TTL, then test `https://www.your-domain/` in an incognito window.
 
-**Project root:** the Next app always lives in **`web/`** in Git. Vercel must either build that folder via **Root Directory = `web`**, or via **Root Directory = repo root** plus the repo-level **`package.json`** that installs **`web/`** and runs **`npm run build --prefix web`**.
+**Project root:** the Next app lives in **`web/`** in Git. On Vercel, set **Root Directory = `web`** (see root [`README.md`](../README.md) for the full dashboard checklist).
 
 **CLI “Unexpected error” on deploy:** open the deployment **Inspect** link from the CLI output in the Vercel dashboard and read **Build** / **Functions** logs; retry deploy or use **Redeploy** from the latest successful Git commit.
 
