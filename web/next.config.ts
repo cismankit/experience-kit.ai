@@ -4,13 +4,13 @@ import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
 const webDir = path.dirname(fileURLToPath(import.meta.url));
-// Monorepo: single root so Turbopack resolves `next` from repo or `web/node_modules`
-// after hot reloads (e.g. .env.local); `web/` alone can break resolution with dual lockfiles.
-const turbopackRoot = path.join(webDir, "..");
 
 const nextConfig: NextConfig = {
+  // App root must stay `web/` so Turbopack’s project directory is not mis-inferred as
+  // `web/src/app` (breaks `next` resolution). Repo-root lockfile is outside this root but
+  // `web/node_modules/next` remains inside.
   turbopack: {
-    root: turbopackRoot,
+    root: webDir,
   },
   // Leave off: React Compiler can break subtle animation/ref timing used by Framer Motion.
   experimental: {
