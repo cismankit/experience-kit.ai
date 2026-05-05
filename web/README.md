@@ -74,7 +74,7 @@ Update `siteUrl` and `metadataBase` in `layout.tsx` (and the same base in `robot
    - **Monorepo root (`.` / empty):** the repo-level [`package.json`](../package.json) declares **`next`** (required for Vercel’s Next.js detection at the root) and **`postinstall`** runs **`npm install --prefix web`**. **`npm run build`** runs the Next build in **`web/`**. Do **not** point the root at **`web`** in the dashboard while also relying on this file—pick one root.
    - **`web`:** Vercel’s cwd is `web/`; only [`vercel.json`](./vercel.json) here applies. Use **`npm ci`** / **`npm run build`** in that folder (default when the framework is detected from `web/package.json`).
 4. Framework preset: **Next.js** (auto when `web/package.json` has `next`).
-5. Add your production domain (`experiencekit.ai`) under **Domains** and configure DNS per Vercel.
+5. Add your production domain (`experiencekit.ai`) under **Domains** and configure DNS per Vercel. Add **both** **apex** and **`www`** if you redirect apex → `www`; otherwise visitors hit Vercel **`NOT_FOUND`** on `www` even when the apex record works.
 
 `web/vercel.json` pins the framework and build/install when the project root is **`web/`**.
 

@@ -38,6 +38,7 @@ If `origin` already exists, use `git remote set-url origin https://github.com/ci
 - **Recommended:** set the project **Root Directory** to the **repository root** (`.` / empty). The repo-level [`package.json`](./package.json) lists **`next`** so Vercel’s framework detector succeeds, and **`postinstall`** runs **`npm install --prefix web`** so the real app dependencies install in **`web/`**. **`npm run build`** delegates to **`web`** (`npm run build --prefix web`).
 - **Alternative:** set **Root Directory** to **`web`** only. Vercel then installs and builds only inside **`web/`**; the root **`package.json`** is unused. Use [`web/vercel.json`](./web/vercel.json) for any Vercel overrides scoped to that app.
 - If **`*.vercel.app` or your domain returns 404** but the deployment shows **Ready**, open **Deployments →** that deployment → confirm it is **Production** and not only Preview; turn off **Deployment Protection** for production if preview URLs return **401**.
+- If the **apex** redirects to **`www`** but **`www` returns `NOT_FOUND`** from Vercel, **`www` is not attached to this project** (or DNS for `www` points at Vercel without the hostname being added). In Vercel → **Domains**, add **`www.experiencekit.ai`** to the same project as production and apply the **CNAME** / DNS values Vercel shows for `www` (do not use the apex nameserver target for `www`).
 - Cloudflare: use **SSL/TLS → Full (strict)** when a record is **Proxied** (orange cloud).
 
 ## Conventions
