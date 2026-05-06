@@ -1,11 +1,12 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { MembershipRole } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { db } from "@/lib/db";
+
+export type MembershipRole = "learner" | "parent" | "educator" | "school_admin";
 
 const credentialsSchema = z.object({
   email: z.string().email(),

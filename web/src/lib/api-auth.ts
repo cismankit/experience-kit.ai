@@ -1,6 +1,5 @@
-import { MembershipRole } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { auth, hasAtLeastRole } from "@/lib/auth";
+import { auth, hasAtLeastRole, type MembershipRole } from "@/lib/auth";
 
 type AuthContext = {
   userId: string;
