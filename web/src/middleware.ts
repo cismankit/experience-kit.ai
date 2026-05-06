@@ -32,5 +32,12 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/orders/:path*", "/platform/:path*", "/api/support/tickets/:path*", "/api/commerce/:path*"],
+  matcher: [
+    "/orders/:path*",
+    "/platform/:path*",
+    "/onboarding/:path*",
+    "/api/support/tickets/:path*",
+    "/api/commerce/:path*",
+    "/api/onboarding/:path*",
+  ],
 };

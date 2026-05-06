@@ -3,6 +3,7 @@ export const HEADER_NAV = [
   { href: "/kits", label: "Kits" },
   { href: "/missions", label: "Missions" },
   { href: "/platform", label: "Platform" },
+  { href: "/onboarding", label: "Onboarding" },
   { href: "/find-my-kit", label: "Find my kit" },
   { href: "/schools", label: "For schools" },
   { href: "/track", label: "Track" },

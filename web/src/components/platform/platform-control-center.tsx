@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowRight, Bot, Boxes, Headset, ShieldCheck, Users } from "lucide-react";
+import { Activity, ArrowRight, Bot, Boxes, ClipboardCheck, CreditCard, Hammer, Headset, Rocket, ShieldCheck, TestTube2, Users } from "lucide-react";
 import { Container } from "@/components/container";
 import { DashboardPreview } from "@/components/product/dashboard-preview";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,44 @@ const TRACKS: { key: TrackKey; label: string }[] = [
   { key: "ai", label: "AI copilot" },
   { key: "commerce", label: "Commerce" },
   { key: "support", label: "Support" },
+];
+
+const TRANSFORMATION_STEPS: {
+  key: string;
+  title: string;
+  detail: string;
+  Icon: typeof ClipboardCheck;
+}[] = [
+  {
+    key: "assess",
+    title: "Assess current state",
+    detail: "Adaptive intake captures role, maturity, constraints, and readiness signals in one guided flow.",
+    Icon: ClipboardCheck,
+  },
+  {
+    key: "design",
+    title: "Design target state",
+    detail: "AI co-designs a transformation blueprint: capabilities, milestones, controls, and ownership.",
+    Icon: Hammer,
+  },
+  {
+    key: "build-test-secure",
+    title: "Develop, test, secure",
+    detail: "Mission-based execution pairs build plans with quality gates, test evidence, and security checkpoints.",
+    Icon: TestTube2,
+  },
+  {
+    key: "operate-monitor",
+    title: "Operationalize + monitor",
+    detail: "Runbooks, alerts, and KPI telemetry keep rollout stable and measurable across teams.",
+    Icon: Activity,
+  },
+  {
+    key: "transform",
+    title: "Enable transformation",
+    detail: "Executive-ready scorecards and learning loops turn delivery into repeatable transformation outcomes.",
+    Icon: Rocket,
+  },
 ];
 
 export function PlatformControlCenter() {
@@ -43,6 +81,53 @@ export function PlatformControlCenter() {
             customer support operations.
           </p>
         </div>
+
+        <section className={cn(cardSurface(), "mt-8 rounded-3xl p-6 sm:p-7 lg:p-8")} aria-labelledby="transformation-journey-heading">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Transformation journey</p>
+              <h2 id="transformation-journey-heading" className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-[1.75rem]">
+                One platform for onboarding, delivery, security, and operations
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+                Smart onboarding assesses where each user is today, then guides them through design, implementation,
+                validation, and operational monitoring toward a measurable target state.
+              </p>
+            </div>
+            <div className="w-full max-w-sm rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 sm:w-auto">
+              <p className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-900">
+                <CreditCard className="h-4 w-4" aria-hidden />
+                Payments + plans in-product
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-emerald-900/80">
+                Subscription upgrades, seat expansion, and order-linked support all live in the same workflow.
+              </p>
+            </div>
+          </div>
+          <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {TRANSFORMATION_STEPS.map((step, idx) => (
+              <li key={step.key} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Stage {idx + 1}</p>
+                <p className="mt-2 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 ring-1 ring-slate-200/80">
+                  <step.Icon className="h-4 w-4 text-slate-700" aria-hidden />
+                </p>
+                <p className="mt-3 text-sm font-semibold text-slate-900">{step.title}</p>
+                <p className="mt-1.5 text-xs leading-relaxed text-slate-600">{step.detail}</p>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <Button variant="primary" size="sm" href="/find-my-kit">
+              Start smart assessment
+            </Button>
+            <Button variant="outline" size="sm" href="/platform">
+              Open transformation workspace
+            </Button>
+            <Button variant="secondary" size="sm" href="/orders">
+              Manage plan & billing
+            </Button>
+          </div>
+        </section>
 
         <div className="mt-8 flex flex-wrap gap-2">
           {TRACKS.map((t) => (

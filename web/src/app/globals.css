@@ -64,6 +64,14 @@ html {
     animation: none !important;
   }
 
+  .ek-hero-drift-a,
+  .ek-hero-drift-b,
+  .ek-hero-drift-c,
+  .ek-title-shimmer,
+  .ek-kw-glow {
+    animation: none !important;
+  }
+
   .ek-cta-lift:hover {
     transform: none;
   }
@@ -84,6 +92,103 @@ html {
 .ek-hero-breathe {
   animation: ek-hero-breathe 16s ease-in-out infinite;
   will-change: opacity, transform;
+}
+
+@keyframes ek-hero-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+@keyframes ek-hero-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 7px, 0);
+  }
+}
+
+@keyframes ek-hero-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes ek-title-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.ek-hero-drift-a {
+  animation: ek-hero-drift-a 9.5s ease-in-out infinite;
+}
+
+.ek-hero-drift-b {
+  animation: ek-hero-drift-b 11s ease-in-out infinite;
+}
+
+.ek-hero-drift-c {
+  animation: ek-hero-drift-c 8.75s ease-in-out infinite;
+}
+
+.ek-title-shimmer {
+  background-size: 220% 220%;
+  animation: ek-title-shimmer 9s ease-in-out infinite;
+}
+
+.ek-title-shimmer-slow {
+  animation-duration: 11s;
+}
+
+.ek-title-shimmer-mid {
+  animation-duration: 8.25s;
+}
+
+.ek-title-shimmer-fast {
+  animation-duration: 6.75s;
+}
+
+@keyframes ek-kw-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.48;
+    transform: translate(-50%, -50%) scale(1.07);
+  }
+}
+
+.ek-kw-glow {
+  animation: ek-kw-glow-pulse 5.25s ease-in-out infinite;
+}
+
+.ek-kw-glow-phase-a {
+  animation-delay: 0s;
+}
+
+.ek-kw-glow-phase-b {
+  animation-delay: 1.15s;
+}
+
+.ek-kw-glow-phase-c {
+  animation-delay: 2.35s;
 }
 
 @media (hover: hover) and (pointer: fine) {

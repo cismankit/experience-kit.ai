@@ -1,6 +1,7 @@
 "use client";
 
 import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -27,6 +28,68 @@ const CATEGORIES: readonly { href: string; label: string; Icon: LucideIcon }[] =
   { href: "/studio", label: "Studio", Icon: LayoutGrid },
   { href: "/support", label: "Support", Icon: HeadphonesIcon },
 ] as const;
+
+/**
+ * Keywords stay readable text — cinematic motion via stagger + shimmer + soft bloom (no text↔icon swap).
+ */
+function HeroKeyword({
+  children,
+  gradientClassName,
+  glowClassName,
+  shimmerClassName = "ek-title-shimmer",
+  glowPhaseClassName,
+  revealDelay = 0,
+}: {
+  children: ReactNode;
+  gradientClassName: string;
+  glowClassName: string;
+  shimmerClassName?: string;
+  /** Offsets glow pulse timing per word */
+  glowPhaseClassName?: string;
+  revealDelay?: number;
+}) {
+  const reduce = useReducedMotion();
+
+  return (
+    <span className="relative mx-0.5 inline-block align-baseline">
+      {!reduce ? (
+        <span
+          className={cn(
+            "ek-kw-glow pointer-events-none absolute left-1/2 top-[52%] -z-10 h-[1.15em] w-[118%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl motion-reduce:opacity-0",
+            glowClassName,
+            glowPhaseClassName,
+          )}
+          aria-hidden
+        />
+      ) : null}
+      <motion.span
+        className={cn(
+          "relative inline-block bg-clip-text pb-[0.04em] text-transparent leading-none",
+          shimmerClassName,
+          gradientClassName,
+        )}
+        initial={reduce ? false : { opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.62, delay: revealDelay, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </motion.span>
+      {!reduce ? (
+        <motion.span
+          className="absolute inset-x-0 bottom-[0.02em] mx-auto h-[0.055em] max-w-[100%] origin-center rounded-full opacity-60 motion-reduce:hidden"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.55) 45%, rgb(255 255 255 / 0.55) 55%, transparent 100%)",
+          }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.85, delay: revealDelay + 0.12, ease: [0.22, 1, 0.36, 1] }}
+          aria-hidden
+        />
+      ) : null}
+    </span>
+  );
+}
 
 export function HeroProductLoop() {
   const reduce = useReducedMotion();
@@ -57,7 +120,37 @@ export function HeroProductLoop() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
             >
-              Hands-on kits. Daily missions. Real-world proof.
+              Hands-on{" "}
+              <HeroKeyword
+                gradientClassName="bg-gradient-to-r from-amber-700 via-orange-500 to-amber-800"
+                glowClassName="bg-gradient-to-r from-amber-400/55 via-orange-400/45 to-amber-500/40"
+                shimmerClassName="ek-title-shimmer ek-title-shimmer-slow"
+                glowPhaseClassName="ek-kw-glow-phase-a"
+                revealDelay={0.06}
+              >
+                kits
+              </HeroKeyword>
+              . Daily{" "}
+              <HeroKeyword
+                gradientClassName="bg-gradient-to-r from-emerald-700 via-teal-500 to-sky-600"
+                glowClassName="bg-gradient-to-r from-emerald-400/45 via-teal-400/40 to-sky-400/35"
+                shimmerClassName="ek-title-shimmer ek-title-shimmer-mid"
+                glowPhaseClassName="ek-kw-glow-phase-b"
+                revealDelay={0.14}
+              >
+                missions
+              </HeroKeyword>
+              . Real-world{" "}
+              <HeroKeyword
+                gradientClassName="bg-gradient-to-r from-violet-700 via-fuchsia-500 to-indigo-700"
+                glowClassName="bg-gradient-to-r from-violet-400/45 via-fuchsia-400/38 to-indigo-400/35"
+                shimmerClassName="ek-title-shimmer ek-title-shimmer-fast"
+                glowPhaseClassName="ek-kw-glow-phase-c"
+                revealDelay={0.22}
+              >
+                proof
+              </HeroKeyword>
+              .
             </motion.h1>
           </div>
 

@@ -56,6 +56,11 @@ enum TicketPriority {
   urgent
 }
 
+enum OnboardingPlanStatus {
+  draft
+  completed
+}
+
 model User {
   id            String               @id @default(cuid())
   name          String?
@@ -70,6 +75,7 @@ model User {
   tickets       SupportTicket[]      @relation("TicketRequester")
   accounts      Account[]
   sessions      Session[]
+  onboardingPlans OnboardingPlan[]
 }
 
 model Workspace {
@@ -86,6 +92,26 @@ model Workspace {
   orders        CommerceOrder[]
   copilotRuns   CopilotInteraction[]
   tickets       SupportTicket[]
+  onboardingPlans OnboardingPlan[]
+}
+
+model OnboardingPlan {
+  id            String              @id @default(cuid())
+  workspaceId   String
+  userId        String?
+  version       Int
+  status        OnboardingPlanStatus @default(draft)
+  inputState    Json
+  resultState   Json?
+  maturityScore Int?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  workspace     Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user          User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, createdAt])
+  @@index([workspaceId, userId, status])
+  @@unique([workspaceId, version])
 }
 
 model WorkspaceMembership {
