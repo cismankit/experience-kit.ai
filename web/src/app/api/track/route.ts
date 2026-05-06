@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { requestContext } from "@/lib/observability";
 
 const bodySchema = z.object({
   orderId: z.string().min(1),
@@ -8,16 +8,19 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const obs = requestContext(req, "api.track.post");
   let rawBody: unknown;
   try {
     rawBody = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    obs.log("invalid_json");
+    return obs.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
   const parsed = bodySchema.safeParse(rawBody);
   if (!parsed.success) {
-    return NextResponse.json({ error: "orderId and email required" }, { status: 400 });
+    obs.log("invalid_payload");
+    return obs.json({ error: "orderId and email required" }, { status: 400 });
   }
 
   const orderId = parsed.data.orderId.trim();
@@ -29,7 +32,8 @@ export async function POST(req: Request) {
     },
   });
   if (!order) {
-    return NextResponse.json({ error: "Order not found for that email" }, { status: 404 });
+    obs.log("order_not_found", { orderId });
+    return obs.json({ error: "Order not found for that email" }, { status: 404 });
   }
 
   const timelineByStatus = {
@@ -60,7 +64,8 @@ export async function POST(req: Request) {
 
   const statusKey = (order.status in timelineByStatus ? order.status : "processing") as keyof typeof timelineByStatus;
 
-  return NextResponse.json({
+  obs.log("track_success", { orderId, status: order.status });
+  return obs.json({
     orderId: order.orderNumber,
     email,
     status: order.status,

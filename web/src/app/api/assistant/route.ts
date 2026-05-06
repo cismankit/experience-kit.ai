@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { requestContext } from "@/lib/observability";
 
 const bodySchema = z.object({
   message: z.string().min(1).max(1500),
@@ -29,16 +29,19 @@ function replyFor(text: string): string {
 }
 
 export async function POST(req: Request) {
+  const obs = requestContext(req, "api.assistant.post");
   let rawBody: unknown;
   try {
     rawBody = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    obs.log("invalid_json");
+    return obs.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
   const parsed = bodySchema.safeParse(rawBody);
   if (!parsed.success) {
-    return NextResponse.json({ error: "message is required" }, { status: 400 });
+    obs.log("invalid_payload");
+    return obs.json({ error: "message is required" }, { status: 400 });
   }
 
   const message = parsed.data.message.trim();
@@ -54,7 +57,8 @@ export async function POST(req: Request) {
   }
 
   if (!workspaceId) {
-    return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
+    obs.log("workspace_not_found");
+    return obs.json({ error: "Workspace not found" }, { status: 404 });
   }
 
   const reply = replyFor(message);
@@ -68,7 +72,8 @@ export async function POST(req: Request) {
     select: { id: true, createdAt: true },
   });
 
-  return NextResponse.json({
+  obs.log("assistant_reply", { workspaceId, hasUser: Boolean(session?.user?.id) });
+  return obs.json({
     reply,
     interactionId: interaction.id,
     createdAt: interaction.createdAt.toISOString(),
