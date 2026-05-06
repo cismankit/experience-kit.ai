@@ -1,4 +1,3 @@
-import { TicketPriority, TicketStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireApiAuth } from "@/lib/api-auth";
@@ -37,8 +36,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ ticket
   const ticket = await db.supportTicket.update({
     where: { id: existing.id },
     data: {
-      status: parsed.data.status as TicketStatus | undefined,
-      priority: parsed.data.priority as TicketPriority | undefined,
+      status: parsed.data.status,
+      priority: parsed.data.priority,
     },
   });
   return NextResponse.json({ ticket });
