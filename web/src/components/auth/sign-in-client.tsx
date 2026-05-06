@@ -40,6 +40,17 @@ export function SignInClient({ callbackUrl }: { callbackUrl: string }) {
       <div className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Sign in to workspace</h1>
         <p className="mt-2 text-sm text-slate-600">Use the seeded local credentials or your connected account.</p>
+        <div className="mt-4">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            className="w-full bg-white"
+            onClick={() => void signIn("google", { callbackUrl })}
+          >
+            Continue with Google
+          </Button>
+        </div>
         <form className="mt-6 space-y-4" onSubmit={onSubmit}>
           <div>
             <label className="text-sm font-medium text-slate-800" htmlFor="email">

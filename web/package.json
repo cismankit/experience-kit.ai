@@ -17,7 +17,8 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "node prisma/seed.mjs",
-    "db:reset": "prisma migrate reset --force && npm run db:seed"
+    "db:reset": "prisma migrate reset --force && npm run db:seed",
+    "smoke:journey": "node scripts/smoke-journey.mjs"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",

@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -21,6 +22,14 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/sign-in",
   },
   providers: [
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? [
+          GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          }),
+        ]
+      : []),
     CredentialsProvider({
       name: "Email and password",
       credentials: {
@@ -65,11 +74,53 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider !== "google" || !user.email) return true;
+
+      const email = user.email.toLowerCase();
+      const existingUser = await db.user.findUnique({
+        where: { email },
+        include: { memberships: { include: { workspace: true } } },
+      });
+      if (!existingUser) return true;
+      if (existingUser.memberships.length > 0) return true;
+
+      const domain = email.split("@")[1] ?? "workspace";
+      const baseSlug = domain.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
+      const workspace = await db.workspace.create({
+        data: {
+          name: `${existingUser.name ?? "New"} Workspace`,
+          slug: `${baseSlug}-${existingUser.id.slice(-5)}`,
+          type: "family",
+          plan: "starter",
+        },
+      });
+      await db.workspaceMembership.create({
+        data: {
+          workspaceId: workspace.id,
+          userId: existingUser.id,
+          role: "parent",
+        },
+      });
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.workspaceId = (user as { workspaceId?: string }).workspaceId;
         token.workspaceSlug = (user as { workspaceSlug?: string }).workspaceSlug;
         token.role = (user as { role?: MembershipRole }).role;
+      }
+      if ((!token.workspaceId || !token.role) && token.sub) {
+        const membership = await db.workspaceMembership.findFirst({
+          where: { userId: token.sub },
+          include: { workspace: true },
+          orderBy: { createdAt: "asc" },
+        });
+        if (membership) {
+          token.workspaceId = membership.workspaceId;
+          token.workspaceSlug = membership.workspace.slug;
+          token.role = membership.role;
+        }
       }
       return token;
     },

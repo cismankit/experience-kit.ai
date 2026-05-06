@@ -59,6 +59,8 @@ const TRANSFORMATION_STEPS: {
 
 export function PlatformControlCenter() {
   const [track, setTrack] = useState<TrackKey>("auth");
+  const [checkoutBusy, setCheckoutBusy] = useState(false);
+  const [checkoutMessage, setCheckoutMessage] = useState("");
   const workspace = WORKSPACES[1];
 
   const billingHealth = useMemo(() => {
@@ -67,6 +69,28 @@ export function PlatformControlCenter() {
     if (ratio >= 0.7) return "Healthy usage with room to grow";
     return "Plenty of seat headroom";
   }, [workspace.seatsTotal, workspace.seatsUsed]);
+
+  async function startCheckout(plan: "starter" | "growth" | "district", seats: number) {
+    setCheckoutBusy(true);
+    setCheckoutMessage("");
+    try {
+      const res = await fetch("/api/commerce/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan, seats }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setCheckoutMessage(typeof json?.error === "string" ? json.error : "Could not start checkout.");
+        return;
+      }
+      setCheckoutMessage(`Checkout initialized (${plan}, ${seats} seats). Ref: ${json.checkoutRef}`);
+    } catch {
+      setCheckoutMessage("Network issue while starting checkout.");
+    } finally {
+      setCheckoutBusy(false);
+    }
+  }
 
   return (
     <main id="top" className="flex-1 border-b border-slate-200/80 bg-gradient-to-b from-white via-stone-50/30 to-white">
@@ -258,6 +282,28 @@ export function PlatformControlCenter() {
                     <Button variant="outline" size="sm" href="/track">
                       Track shipment
                     </Button>
+                  </div>
+                  <div className="mt-4 border-t border-slate-100 pt-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Plan & billing</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => void startCheckout("growth", Math.max(workspace.seatsUsed + 10, 25))}
+                        disabled={checkoutBusy}
+                      >
+                        Upgrade to Growth
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => void startCheckout("district", Math.max(workspace.seatsUsed + 30, 75))}
+                        disabled={checkoutBusy}
+                      >
+                        Upgrade to District
+                      </Button>
+                    </div>
+                    {checkoutMessage ? <p className="mt-2 text-xs text-slate-600">{checkoutMessage}</p> : null}
                   </div>
                 </div>
               </>

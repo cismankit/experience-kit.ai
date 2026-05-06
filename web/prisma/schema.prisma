@@ -61,6 +61,14 @@ enum OnboardingPlanStatus {
   completed
 }
 
+enum BillingEventType {
+  checkout_started
+  checkout_completed
+  seat_upgrade
+  subscription_updated
+  subscription_canceled
+}
+
 model User {
   id            String               @id @default(cuid())
   name          String?
@@ -76,6 +84,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
   onboardingPlans OnboardingPlan[]
+  journeyProgresses JourneyProgress[]
+  missionAttempts MissionAttempt[]
+  proofs        ProofArtifact[]
+  recommendationSnapshots RecommendationSnapshot[]
 }
 
 model Workspace {
@@ -93,6 +105,11 @@ model Workspace {
   copilotRuns   CopilotInteraction[]
   tickets       SupportTicket[]
   onboardingPlans OnboardingPlan[]
+  journeyProgresses JourneyProgress[]
+  missionAttempts MissionAttempt[]
+  proofs        ProofArtifact[]
+  recommendationSnapshots RecommendationSnapshot[]
+  billingEvents BillingEvent[]
 }
 
 model OnboardingPlan {
@@ -112,6 +129,87 @@ model OnboardingPlan {
   @@index([workspaceId, createdAt])
   @@index([workspaceId, userId, status])
   @@unique([workspaceId, version])
+}
+
+model JourneyProgress {
+  id               String    @id @default(cuid())
+  workspaceId      String
+  userId           String
+  currentStage     String
+  recommendedKitId String?
+  completedStages  Json
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  workspace        Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([workspaceId, currentStage])
+}
+
+model MissionAttempt {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  userId       String
+  missionKey   String
+  status       String
+  score        Int?
+  startedAt    DateTime  @default(now())
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  proofs       ProofArtifact[]
+
+  @@index([workspaceId, userId, missionKey])
+}
+
+model ProofArtifact {
+  id              String         @id @default(cuid())
+  workspaceId     String
+  userId          String
+  missionAttemptId String?
+  title           String
+  summary         String?
+  artifactUrl     String?
+  verificationStatus String      @default("pending")
+  createdAt       DateTime       @default(now())
+  workspace       Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  missionAttempt  MissionAttempt? @relation(fields: [missionAttemptId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, userId, createdAt])
+}
+
+model RecommendationSnapshot {
+  id              String    @id @default(cuid())
+  workspaceId     String
+  userId          String
+  source          String
+  recommendedKitId String
+  confidence      Int?
+  rationale       Json
+  createdAt       DateTime  @default(now())
+  workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, userId, createdAt])
+}
+
+model BillingEvent {
+  id             String           @id @default(cuid())
+  workspaceId    String
+  eventType      BillingEventType
+  provider       String
+  providerRef    String?
+  amountCents    Int?
+  currency       String?
+  metadata       Json?
+  createdAt      DateTime         @default(now())
+  workspace      Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
 }
 
 model WorkspaceMembership {

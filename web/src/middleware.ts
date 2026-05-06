@@ -6,8 +6,9 @@ export default withAuth(
     const token = req.nextauth.token;
     const path = req.nextUrl.pathname;
     const isPublicSupportCreate = path === "/api/support/tickets" && req.method === "POST";
+    const isPublicCommerceWebhook = path === "/api/commerce/webhook" && req.method === "POST";
 
-    if (!token && !isPublicSupportCreate) {
+    if (!token && !isPublicSupportCreate && !isPublicCommerceWebhook) {
       const signInUrl = new URL("/auth/sign-in", req.url);
       signInUrl.searchParams.set("callbackUrl", req.url);
       return NextResponse.redirect(signInUrl);
