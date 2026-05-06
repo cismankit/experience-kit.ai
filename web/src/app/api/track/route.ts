@@ -57,6 +57,9 @@ export async function POST(req: Request) {
     ],
   } as const;
 
+
+  const statusKey = (order.status in timelineByStatus ? order.status : "processing") as keyof typeof timelineByStatus;
+
   return NextResponse.json({
     orderId: order.orderNumber,
     email,
@@ -64,6 +67,6 @@ export async function POST(req: Request) {
     headline: order.status === "in_transit" ? "Shipment in transit" : `Order ${order.status.replace("_", " ")}`,
     etaWindow:
       "Delivery timing updates when the carrier scans your package. Watch your inbox for tracking messages from ExperienceKit.ai and the carrier.",
-    timeline: timelineByStatus[order.status],
+    timeline: timelineByStatus[statusKey],
   });
 }
