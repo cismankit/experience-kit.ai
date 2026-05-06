@@ -28,7 +28,7 @@ export function TodayMissionSection() {
   return (
     <section
       id="daily-missions"
-      className="scroll-mt-28 border-b border-slate-200/70 bg-gradient-to-b from-stone-50 to-white py-14 sm:py-16 lg:py-20"
+      className="scroll-mt-28 border-b border-slate-200/70 bg-gradient-to-b from-amber-50/45 via-stone-50 to-white py-14 sm:py-16 lg:py-20 shadow-[inset_0_1px_0_0_rgba(251,191,36,0.2)]"
       aria-labelledby="today-mission-heading"
     >
       <Container>

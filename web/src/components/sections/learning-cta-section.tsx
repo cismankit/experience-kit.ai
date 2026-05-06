@@ -10,13 +10,13 @@ export function LearningCtaSection() {
             Ready to pick a kit and start today&apos;s mission?
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-300">
-            Explore journeys, match a kit to your learner, or talk with us about pilots—we&apos;ll outline exactly what
-            happens next.
+            Match in Kit Finder, browse full journeys on the kit page, or message Support—quotes and pilot questions route
+            to humans; most replies within <strong className="font-semibold text-slate-200">one business day</strong>.
           </p>
         </div>
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           <Button variant="primary" size="lg" href="/kits" className="w-full sm:w-auto">
-            Find my kit
+            Browse kits
           </Button>
           <Button variant="outline" size="lg" href="/#daily-missions" className="w-full border-white/30 bg-transparent text-white hover:bg-white/10 sm:w-auto">
             Explore daily missions

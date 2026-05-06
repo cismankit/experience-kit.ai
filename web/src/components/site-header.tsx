@@ -27,7 +27,9 @@ export function SiteHeader() {
       )}
     >
       <div className="border-b border-slate-200/80 bg-slate-950 px-4 py-2.5 text-center text-xs font-medium leading-snug text-amber-100 sm:text-sm">
-        <span className="text-amber-50/90">Ship-ready kits · Track every order · Copilot in the corner</span>
+        <span className="text-amber-50/90">
+          Physical kits · Daily missions · AI that coaches reflection—never replaces the build
+        </span>
       </div>
       <Container className="flex h-14 items-center justify-between gap-3 sm:h-16 sm:gap-4">
         <Link
@@ -60,7 +62,7 @@ export function SiteHeader() {
             Track
           </Button>
           <Button variant="primary" size="sm" href="/kits">
-            Shop kits
+            Browse kits
           </Button>
         </div>
 
@@ -100,7 +102,7 @@ export function SiteHeader() {
                 My orders
               </Button>
               <Button variant="primary" className="w-full" href="/kits">
-                Shop kits
+                Browse kits
               </Button>
               <Button variant="ghost" className="w-full" href="/#contact">
                 Support

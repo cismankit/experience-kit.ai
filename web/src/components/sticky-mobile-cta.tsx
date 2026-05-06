@@ -43,8 +43,14 @@ export function StickyMobileCta() {
         <Button variant="primary" size="md" className="min-h-12 flex-1 shadow-md" href="/kits">
           Browse kits
         </Button>
-        <Button variant="outline" size="md" className="min-h-12 flex-1 bg-white" href="/track">
-          Track order
+        <Button
+          variant="outline"
+          size="md"
+          className="min-h-12 flex-1 bg-white"
+          href="/#daily-missions"
+          aria-label="See how daily missions work"
+        >
+          Missions
         </Button>
       </div>
     </nav>

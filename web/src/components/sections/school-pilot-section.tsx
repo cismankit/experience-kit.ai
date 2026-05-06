@@ -35,6 +35,14 @@ export function SchoolPilotSection() {
             </p>
           }
         />
+        <div className="mt-8 max-w-3xl rounded-2xl border border-amber-200/80 bg-amber-50/40 px-5 py-4 text-sm leading-relaxed text-slate-800">
+          <p className="font-semibold text-slate-900">How pilots typically run</p>
+          <p className="mt-2">
+            Most cohort pilots span <strong>4–8 weeks</strong>: onboard educators → weekly missions → learner showcase →
+            replenish or expand. We align <strong>kit mix</strong>, <strong>cohort size</strong>, and{" "}
+            <strong>facilitator capacity</strong> before anything ships—then quote, PO, ship, and track in the same flow.
+          </p>
+        </div>
         <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((it, idx) => (
             <li key={`${it.label}-${idx}`}>

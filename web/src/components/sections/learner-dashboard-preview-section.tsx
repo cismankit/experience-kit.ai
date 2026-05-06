@@ -14,14 +14,14 @@ export function LearnerDashboardPreviewSection() {
       <Container>
         <SectionHeading
           id="dashboard-preview-heading"
-          eyebrow="Preview"
-          title="Your learner dashboard (preview)"
+          eyebrow="Rhythm"
+          title="Where progress lives"
           align="center"
           tone="dark"
           description={
             <p className="mx-auto max-w-2xl text-slate-300">
-              A calm place to see momentum—structured for future wiring to live data. Today it&apos;s a visual preview of
-              the journey ahead.
+              An example of the rhythm learners feel—today&apos;s mission, streaks, proof, and what unlocks next. Built
+              to reward showing up daily.
             </p>
           }
         />
@@ -88,7 +88,9 @@ export function LearnerDashboardPreviewSection() {
                 </p>
               </div>
             </div>
-            <p className="text-xs text-slate-500">Static preview — connect accounts in a future release.</p>
+            <p className="text-xs text-slate-400">
+              Illustrative example — sign-in and live sync ship with your program rollout.
+            </p>
           </div>
         </div>
       </Container>

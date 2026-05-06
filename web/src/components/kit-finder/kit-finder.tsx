@@ -178,8 +178,8 @@ export function KitFinder() {
       >
         <h3 className="text-lg font-semibold text-slate-900">Suggested kits</h3>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          Recommendations shift as you adjust answers. Each match includes a short reason you can sanity-check with your
-          learner or team.
+          Recommendations shift as you adjust answers. Each match includes a short reason you can verify with your
+          learner, classroom, or leadership team.
         </p>
         <ul className="mt-6 space-y-5">
           {results.map(({ kit, reasons }) => (

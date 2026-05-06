@@ -41,7 +41,7 @@ export function HeroSection() {
               transition={{ duration: 0.35 }}
             >
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              Learning, made tangible
+              Physical kits · Daily missions · Portfolio proof
             </motion.p>
             <motion.h1
               id="hero-heading"
@@ -65,6 +65,15 @@ export function HeroSection() {
               ExperienceKit.ai combines hands-on materials, guided missions, AI reflection, family and educator support,
               and portfolio-ready outcomes — so learners do not just study the future, they build it.
             </motion.p>
+            <motion.p
+              className="mt-3 max-w-xl text-pretty text-sm leading-relaxed text-slate-600 sm:text-base"
+              initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.1 }}
+            >
+              Real materials ship to you. Missions and reflection live <span className="font-medium text-slate-800">with</span> the
+              build—not instead of it.
+            </motion.p>
             <motion.ul
               className="mt-6 flex flex-wrap gap-2"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
@@ -87,12 +96,12 @@ export function HeroSection() {
               transition={{ duration: 0.45, delay: 0.16 }}
             >
               <Button variant="primary" size="lg" className="w-full min-[480px]:w-auto" href="/kits">
-                Find my kit
+                Browse kits
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Button>
               <Button variant="outline" size="lg" className="w-full min-[480px]:w-auto bg-white" href="/#daily-missions">
                 <Compass className="h-4 w-4" aria-hidden />
-                Explore daily missions
+                How daily missions work
               </Button>
             </motion.div>
             <p className="mt-4 text-sm text-slate-500">

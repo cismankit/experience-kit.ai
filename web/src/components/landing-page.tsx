@@ -12,16 +12,19 @@ import { PlatformBentoSection } from "@/components/sections/platform-bento-secti
 import { PortfolioProofSection } from "@/components/sections/portfolio-proof-section";
 import { SchoolPilotSection } from "@/components/sections/school-pilot-section";
 import { TodayMissionSection } from "@/components/sections/today-mission-section";
+import { SocialProofStrip } from "@/components/social-proof-strip";
 import { TrustIconsStrip } from "@/components/trust-icons-strip";
 
+/** Home page section order optimized for “daily habit” before platform depth. */
 export function LandingPage() {
   return (
     <>
       <HeroSection />
+      <SocialProofStrip />
       <PersonaJourneySection />
       <TrustIconsStrip />
-      <PlatformBentoSection />
       <TodayMissionSection />
+      <PlatformBentoSection />
       <KitFinderSection />
       <LearnerDashboardPreviewSection />
       <PortfolioProofSection />

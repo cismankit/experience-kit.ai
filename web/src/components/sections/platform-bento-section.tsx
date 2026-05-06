@@ -54,7 +54,7 @@ const tabCopy: Record<
     body: "Districts and networks reorder, track, and replenish through the same surface you use for pilots.",
     bullets: [
       "Batch-friendly manifests with clear spare-part lines for busy labs",
-      "Track and order history stay in the same place you run pilots from",
+      "Track orders and pilot history in one place your team already uses",
       "Support routing for purchase orders, pilots, and custom kit waves",
     ],
   },
