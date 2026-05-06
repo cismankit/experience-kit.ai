@@ -7,11 +7,11 @@ import {
 import { cn } from "@/lib/utils";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-[box-shadow,background-color,border-color,color] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-[box-shadow,background-color,border-color,color] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50";
 
 const variants = {
   primary:
-    "bg-amber-500 text-slate-950 shadow-md shadow-amber-600/20 ring-1 ring-amber-400/30 hover:bg-amber-400 hover:shadow-lg hover:shadow-amber-600/25",
+    "bg-emerald-600 text-white shadow-md shadow-emerald-900/20 ring-1 ring-emerald-500/35 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-900/25",
   secondary:
     "bg-slate-900 text-white shadow-md shadow-slate-900/20 ring-1 ring-white/10 hover:bg-slate-800 hover:shadow-lg",
   outline:

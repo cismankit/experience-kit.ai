@@ -1,63 +1,75 @@
-import { FileText, ImageIcon, Medal, MonitorPlay, ScrollText, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Container } from "@/components/container";
-import { SectionHeading } from "@/components/section-heading";
+import { FadeIn } from "@/components/fade-in";
 import { Button } from "@/components/ui/button";
+import { FEATURED_KIT_IDS, getKitById, type KitProduct } from "@/lib/kits-catalog";
 import { cn } from "@/lib/utils";
 import { cardSurface } from "@/lib/ui";
 
-const items = [
-  { icon: ImageIcon, label: "Photos of builds" },
-  { icon: ScrollText, label: "Short reflections" },
-  { icon: FileText, label: "Mini reports" },
-  { icon: MonitorPlay, label: "Project demos" },
-  { icon: Medal, label: "Skill badges" },
-  { icon: Sparkles, label: "Portfolio entries" },
-] as const;
+const OUTCOME_KIT_IDS = FEATURED_KIT_IDS.slice(0, 3);
 
 export function PortfolioProofSection() {
+  const kits = OUTCOME_KIT_IDS.map((id) => getKitById(id)).filter((k): k is KitProduct => k != null);
+
   return (
     <section
-      id="portfolio-proof"
-      className="scroll-mt-28 border-b border-slate-200/70 bg-stone-50 py-14 sm:py-16 lg:py-20"
-      aria-labelledby="portfolio-proof-heading"
+      id="outcome-proof"
+      className="scroll-mt-28 border-b border-slate-200/70 bg-stone-50 py-12 sm:py-14 lg:py-16"
+      aria-labelledby="outcome-proof-heading"
     >
       <Container>
-        <SectionHeading
-          id="portfolio-proof-heading"
-          eyebrow="Evidence"
-          title="From activity to proof"
-          description={
-            <p className="max-w-2xl">
-              Every kit helps learners stack tangible outcomes—not busywork. Proof becomes part of a growing story you can
-              share with families, mentors, and schools.
-            </p>
-          }
-        />
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((it) => (
-            <li key={it.label}>
-              <div className={cn(cardSurface(), "flex items-center gap-3 rounded-2xl p-5 shadow-sm")}>
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-inner ring-1 ring-slate-200">
-                  <it.icon className="h-5 w-5 text-amber-700" aria-hidden />
-                </span>
-                <span className="font-medium text-slate-900">{it.label}</span>
-              </div>
-            </li>
+        <span id="portfolio-proof" className="sr-only" aria-hidden="true" />
+        <FadeIn>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">Outcomes</p>
+              <h2 id="outcome-proof-heading" className="mt-2 text-balance text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+                What learners ship in each pathway
+              </h2>
+              <p className="mt-3 text-pretty text-sm leading-relaxed text-slate-600 sm:text-base">
+                Pulled from the same kit definitions as the catalog—capstone targets and learner-facing outcomes.
+              </p>
+            </div>
+            <Button variant="outline" size="sm" href="/kits" className="shrink-0 bg-white">
+              Full catalog
+            </Button>
+          </div>
+        </FadeIn>
+
+        <div className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:grid sm:grid-cols-3 sm:overflow-visible [&::-webkit-scrollbar]:hidden">
+          {kits.map((kit, idx) => (
+            <article
+              key={kit.id}
+              className={cn(
+                cardSurface(),
+                "ek-card-lift min-w-[min(100%,18rem)] snap-center rounded-2xl p-5 shadow-sm sm:min-w-0",
+              )}
+            >
+              <FadeIn delay={idx * 0.05}>
+                <p className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-amber-800">
+                  <Sparkles className="h-3.5 w-3.5" aria-hidden />
+                  {kit.tier}
+                </p>
+                <h3 className="mt-3 text-lg font-semibold text-slate-900">{kit.name}</h3>
+                <p className="mt-2 text-sm font-medium text-slate-800">{kit.whatLearnerBuilds}</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  <span className="font-semibold text-slate-800">Capstone: </span>
+                  {kit.finalArtifact}
+                </p>
+                <p className="mt-4 text-sm font-semibold text-amber-900">
+                  <Link
+                    href={`/kits#${kit.id}`}
+                    className="inline-flex items-center gap-1 underline-offset-2 hover:underline"
+                  >
+                    View kit journey
+                    <ArrowRight className="h-4 w-4" aria-hidden />
+                  </Link>
+                </p>
+              </FadeIn>
+            </article>
           ))}
-        </ul>
-        <div className="mt-10 flex justify-center">
-          <Button variant="primary" size="lg" href="/#contact">
-            See sample portfolio
-          </Button>
         </div>
-        <p className="mt-6 text-center text-sm text-slate-500">
-          We&apos;ll walk through artifacts and pacing on a quick call—{" "}
-          <Link href="/#contact" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
-            request a session
-          </Link>
-          .
-        </p>
       </Container>
     </section>
   );

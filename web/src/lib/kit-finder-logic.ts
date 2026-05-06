@@ -17,12 +17,15 @@ export type KitFinderSetting = "home" | "classroom" | "workshop" | "club";
 
 export type KitFinderPace = "weekend" | "daily" | "sprint";
 
+export type KitFinderComfort = "first-kit" | "some-builds" | "ready-deep";
+
 export type KitFinderAnswers = {
   persona: KitFinderPersona | "";
   age: KitFinderAge | "";
   goal: KitFinderGoal | "";
   setting: KitFinderSetting | "";
   pace: KitFinderPace | "";
+  comfort: KitFinderComfort | "";
 };
 
 function scoreKit(
@@ -70,6 +73,11 @@ function scoreKit(
   if (a.pace === "daily" && kit.dailyMissionCount >= 18) bump(2, "Mission cadence matches a daily habit.");
   if (a.pace === "weekend" && kit.firstMissionMinutes <= 35) bump(2, "First mission fits a focused weekend block.");
   if (a.pace === "sprint" && kit.id === "design-sprint-kit") bump(4, "Sprint-shaped prompts and shipping rituals.");
+
+  if (a.comfort === "first-kit" && kit.id === "launch-pad-core") bump(4, "Gentle onboarding and tiny-win pacing for first kits.");
+  if (a.comfort === "some-builds" && kit.id === "design-sprint-kit") bump(3, "Good when learners already enjoy making and iterating.");
+  if (a.comfort === "ready-deep" && (kit.id === "signal-lab" || kit.id === "systems-navigator"))
+    bump(4, "Depth for teams ready for evidence, systems, and defense-ready artifacts.");
 
   return { kit, score, reasons };
 }

@@ -35,15 +35,17 @@ If `origin` already exists, use `git remote set-url origin https://github.com/ci
 
 ### Vercel (important)
 
-Use the **Next.js app folder** as the Vercel project root. Deploying from the **repository root** (`./`) is brittle (Vercel expects **`next.config`**, **`public/`**, and **`.next`** beside the same **`package.json`**; this repo keeps the app under **`web/`**).
+The Next.js app lives only under **`web/`**. Vercel must use that folder as the project root so `next.config`, `public/`, and `package.json` resolve correctly.
 
-**Dashboard → Settings → Build & Deployment (Build & Development Settings):**
+**Dashboard → Settings → Build & Deployment:**
 
-1. **Root Directory:** set to **`web`** (click Edit, enter `web`, save). This is the **required** setting for reliable production deploys for this repository.
-2. **Framework Preset:** **Next.js** (not **Other**). **Other** looks for a static **`public`** output and breaks this app.
-3. **Output Directory:** leave **empty** (default for Next.js).
-4. **Install Command** / **Build Command:** leave **default** (overrides off) so Git-tracked [`web/vercel.json`](./web/vercel.json) applies: **`npm ci --include=dev`** (Vercel sets **`NODE_ENV=production`** during install; without **`--include=dev`**, Tailwind/PostCSS in **`devDependencies`** are skipped and **`next build`** fails) and **`npm run build`**.
-5. Save, then **Deployments → Redeploy** the latest **`main`** commit (or push a new commit). Wait until **Production** shows **Ready** and the yellow “production differs from settings” banner clears.
+1. **Root Directory:** **`web`** (required).
+2. **Framework Preset:** **Next.js** (not **Other**).
+3. **Output Directory:** leave **empty** (Next default).
+4. **Install** / **Build:** leave **default** so [`web/vercel.json`](./web/vercel.json) applies (`npm ci --include=dev`, `npm run build`). Production installs omit devDependencies unless **`--include=dev`** is set—without it, Tailwind/PostCSS fail the build.
+5. **Redeploy** production after saving settings.
+
+**CLI (optional):** from the repo root, `cd web && npx vercel` (or `npx vercel --prod` after `vercel link`). The linked project should still use **Root Directory = web** in the dashboard when the Git integration builds from GitHub.
 
 **Local monorepo (optional):** root [`package.json`](./package.json) still supports **`npm ci`** at the repo root and **`postinstall`** / **`build`** that delegate into **`web/`** for contributors; Vercel does **not** use that file when **Root Directory** is **`web`**.
 - If **`*.vercel.app` or your domain returns 404** but the deployment shows **Ready**, open **Deployments →** that deployment → confirm it is **Production** and not only Preview; turn off **Deployment Protection** for production if preview URLs return **401**.

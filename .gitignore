@@ -3,3 +3,4 @@
 node_modules/
 # Copied from web/.next for Vercel when Root Directory is repo root
 .next/
+.vercel

@@ -6,11 +6,13 @@ import { Menu, X } from "lucide-react";
 import { HEADER_NAV } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { BrandMark } from "@/components/brand-mark";
 import { Container } from "@/components/container";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const showOrderPortal = process.env.NEXT_PUBLIC_ORDER_PORTAL === "1";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -36,10 +38,10 @@ export function SiteHeader() {
           href="/"
           className="flex min-w-0 shrink-0 items-center gap-2 text-sm font-semibold tracking-tight text-slate-900 sm:text-base"
         >
-          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 text-sm font-bold text-slate-950 shadow-sm">
-            EK
+          <BrandMark />
+          <span className="sr-only sm:not-sr-only sm:inline sm:truncate sm:text-lg sm:font-semibold sm:tracking-tight">
+            ExperienceKit.ai
           </span>
-          <span className="hidden truncate sm:inline">ExperienceKit.ai</span>
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary">
@@ -55,14 +57,16 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" size="sm" href="/orders" className="hidden xl:inline-flex">
-            Manage
-          </Button>
+          {showOrderPortal ? (
+            <Button variant="ghost" size="sm" href="/orders" className="hidden xl:inline-flex">
+              Orders
+            </Button>
+          ) : null}
           <Button variant="outline" size="sm" href="/track">
             Track
           </Button>
-          <Button variant="primary" size="sm" href="/kits">
-            Browse kits
+          <Button variant="primary" size="sm" href="/find-my-kit">
+            Find my kit
           </Button>
         </div>
 
@@ -98,13 +102,21 @@ export function SiteHeader() {
               <Button variant="outline" className="w-full" href="/track">
                 Track order
               </Button>
-              <Button variant="secondary" className="w-full" href="/orders">
-                My orders
+              {showOrderPortal ? (
+                <Button variant="secondary" className="w-full" href="/orders">
+                  Orders
+                </Button>
+              ) : null}
+              <Button variant="outline" className="w-full" href="/kits">
+                Kits
               </Button>
-              <Button variant="primary" className="w-full" href="/kits">
-                Browse kits
+              <Button variant="outline" className="w-full" href="/missions">
+                Missions
               </Button>
-              <Button variant="ghost" className="w-full" href="/#contact">
+              <Button variant="primary" className="w-full" href="/find-my-kit">
+                Find my kit
+              </Button>
+              <Button variant="ghost" className="w-full" href="/support">
                 Support
               </Button>
             </div>

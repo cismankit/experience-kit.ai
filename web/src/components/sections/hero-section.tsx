@@ -1,34 +1,59 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, Compass, Images, Sparkles } from "lucide-react";
+import { useEffect } from "react";
 import { AmbientOrbs } from "@/components/motion/ambient-orbs";
-import { HeroScene } from "@/components/motion/hero-scene";
+import { ProductLoopVisual } from "@/components/motion/product-loop-visual";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/container";
 import { cn } from "@/lib/utils";
 import { cardSurface } from "@/lib/ui";
 
-const badges = [
-  "Hands-on kits",
-  "AI-guided reflection",
-  "Daily missions",
-  "Progress tracking",
-  "Portfolio-ready proof",
-] as const;
+const chips = ["Physical kits", "Guided missions", "Portfolio-ready proof"] as const;
 
 export function HeroSection() {
   const reduce = useReducedMotion();
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const parallaxX = useSpring(useTransform(mx, [-0.5, 0.5], reduce ? [0, 0] : [-10, 10]), { stiffness: 26, damping: 18 });
+  const parallaxY = useSpring(useTransform(my, [-0.5, 0.5], reduce ? [0, 0] : [-8, 8]), { stiffness: 26, damping: 18 });
+
+  useEffect(() => {
+    if (reduce) return;
+    const mq = window.matchMedia("(pointer: fine)");
+    if (!mq.matches) return;
+    const reset = () => {
+      mx.set(0);
+      my.set(0);
+    };
+    mq.addEventListener("change", reset);
+    return () => mq.removeEventListener("change", reset);
+  }, [reduce, mx, my]);
 
   return (
     <section
       aria-labelledby="hero-heading"
       className="relative overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-amber-50/60 via-white to-stone-50"
+      onMouseMove={(e) => {
+        if (reduce) return;
+        if (!window.matchMedia("(pointer: fine)").matches) return;
+        const r = e.currentTarget.getBoundingClientRect();
+        mx.set((e.clientX - r.left) / r.width - 0.5);
+        my.set((e.clientY - r.top) / r.height - 0.5);
+      }}
+      onMouseLeave={() => {
+        mx.set(0);
+        my.set(0);
+      }}
     >
       <AmbientOrbs className="opacity-90" />
       <div
-        className="pointer-events-none absolute inset-x-0 -top-40 z-[1] h-[32rem] bg-[radial-gradient(ellipse_85%_55%_at_50%_-5%,rgba(251,191,36,0.28),transparent_58%)]"
+        className={cn(
+          "pointer-events-none absolute inset-x-0 -top-40 z-[1] h-[32rem] bg-[radial-gradient(ellipse_85%_55%_at_50%_-5%,rgba(251,191,36,0.28),transparent_58%)]",
+          "ek-hero-breathe",
+        )}
         aria-hidden
       />
       <Container className="relative z-10 py-12 sm:py-14 lg:py-16">
@@ -41,20 +66,20 @@ export function HeroSection() {
               transition={{ duration: 0.35 }}
             >
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              Physical kits · Daily missions · Portfolio proof
+              Build · explore · reflect
             </motion.p>
             <motion.h1
               id="hero-heading"
-              className="mt-4 text-balance text-[2rem] font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.05rem]"
+              className="mt-4 text-balance text-[2rem] font-semibold leading-[1.12] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.05rem]"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.04 }}
             >
-              AI-powered learning kits that turn{" "}
+              Hands-on kits.{" "}
               <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                curiosity into daily action
-              </span>
-              .
+                AI-guided journeys.
+              </span>{" "}
+              Real-world proof.
             </motion.h1>
             <motion.p
               className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-slate-600 sm:text-lg"
@@ -62,25 +87,16 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.08 }}
             >
-              ExperienceKit.ai combines hands-on materials, guided missions, AI reflection, family and educator support,
-              and portfolio-ready outcomes — so learners do not just study the future, they build it.
-            </motion.p>
-            <motion.p
-              className="mt-3 max-w-xl text-pretty text-sm leading-relaxed text-slate-600 sm:text-base"
-              initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.1 }}
-            >
-              Real materials ship to you. Missions and reflection live <span className="font-medium text-slate-800">with</span> the
-              build—not instead of it.
+              Kits arrive as real materials. Missions keep learners building. AI reflects with them—then proof and progress
+              compound into a portfolio story.
             </motion.p>
             <motion.ul
               className="mt-6 flex flex-wrap gap-2"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.12 }}
+              transition={{ duration: 0.45, delay: 0.1 }}
             >
-              {badges.map((t) => (
+              {chips.map((t) => (
                 <li
                   key={t}
                   className="rounded-full border border-slate-200/90 bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm"
@@ -93,63 +109,64 @@ export function HeroSection() {
               className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
               initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.16 }}
+              transition={{ duration: 0.45, delay: 0.14 }}
             >
-              <Button variant="primary" size="lg" className="w-full min-[480px]:w-auto" href="/kits">
-                Browse kits
+              <Button variant="primary" size="lg" className="w-full min-[480px]:w-auto ek-cta-lift" href="/find-my-kit">
+                Find my kit
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Button>
-              <Button variant="outline" size="lg" className="w-full min-[480px]:w-auto bg-white" href="/#daily-missions">
+              <Button variant="outline" size="lg" className="w-full min-[480px]:w-auto bg-white ek-cta-lift" href="/missions">
                 <Compass className="h-4 w-4" aria-hidden />
-                How daily missions work
+                Today&apos;s missions
               </Button>
             </motion.div>
             <p className="mt-4 text-sm text-slate-500">
-              Need a hand choosing?{" "}
-              <Link href="/#kit-finder" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
-                Open the Kit Finder
+              Prefer to browse?{" "}
+              <Link href="/kits" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
+                Compare kits
               </Link>{" "}
-              or{" "}
-              <Link href="/#contact" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
-                talk with us
+              ·{" "}
+              <Link href="/support" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
+                Talk with us
               </Link>
               .
             </p>
           </div>
           <motion.div
             className="relative flex flex-col gap-6"
+            style={{ x: parallaxX, y: parallaxY }}
             initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.08 }}
           >
             <div className="relative">
-              <HeroScene />
+              <ProductLoopVisual />
             </div>
             <div className={cn(cardSurface(), "rounded-3xl p-5 shadow-lg shadow-slate-900/10 sm:p-6")}>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Today’s learning loop</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Shortcuts</p>
               <p className="mt-2 text-base font-semibold leading-snug text-slate-900 sm:text-lg">
-                One mission, one proof, one reflection—then tomorrow’s step unlocks.
+                Jump to the job you need done—no endless scrolling required.
               </p>
               <div className="mt-4 grid gap-2 text-sm text-slate-600 sm:grid-cols-3">
                 <Link
-                  href="/#daily-missions"
+                  href="/find-my-kit"
                   className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                 >
-                  Today’s mission
+                  Guided match
                 </Link>
                 <Link
-                  href="/#kit-finder"
+                  href="/schools"
                   className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                 >
-                  Kit Finder
+                  For schools
                 </Link>
                 <Link
-                  href="/#portfolio-proof"
+                  href="/#outcome-proof"
                   className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                 >
                   <span className="inline-flex items-center gap-1.5">
                     <Images className="h-4 w-4 shrink-0" aria-hidden />
-                    Proof & portfolio
+                    Proof
                   </span>
                 </Link>
               </div>

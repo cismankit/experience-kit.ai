@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 
 type Msg = { role: "user" | "assistant"; text: string };
 
-const STORAGE_SESSION = "ek-assistant-session-opened";
 const SUGGESTIONS = [
   "Which kit for a middle school lab?",
   "How do I track an order?",
@@ -36,20 +35,6 @@ export function AiAssistantDock() {
   useEffect(() => {
     scrollEnd();
   }, [messages, open, scrollEnd]);
-
-  useEffect(() => {
-    if (reduce) return;
-    try {
-      if (sessionStorage.getItem(STORAGE_SESSION)) return;
-      const t = window.setTimeout(() => {
-        setOpen(true);
-        sessionStorage.setItem(STORAGE_SESSION, "1");
-      }, 1100);
-      return () => window.clearTimeout(t);
-    } catch {
-      /* private mode */
-    }
-  }, [reduce]);
 
   async function send(text: string) {
     const trimmed = text.trim();
@@ -94,9 +79,9 @@ export function AiAssistantDock() {
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className="pointer-events-auto mb-3 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-2xl shadow-slate-900/20 sm:w-[26rem]"
           >
-            <div className="flex items-center justify-between gap-2 border-b border-slate-100 bg-gradient-to-r from-amber-50 to-white px-4 py-3">
+            <div className="flex items-center justify-between gap-2 border-b border-slate-100 bg-gradient-to-r from-emerald-50/90 to-white px-4 py-3">
               <div className="flex items-center gap-2 min-w-0">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-amber-300 shadow-inner">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-emerald-300 shadow-inner">
                   <Sparkles className="h-4 w-4" aria-hidden />
                 </span>
                 <div className="min-w-0">
@@ -106,7 +91,7 @@ export function AiAssistantDock() {
               </div>
               <button
                 type="button"
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
                 onClick={() => setOpen(false)}
                 aria-label="Close assistant"
               >
@@ -123,7 +108,7 @@ export function AiAssistantDock() {
                   className={cn(
                     "rounded-xl px-3 py-2 leading-relaxed",
                     msg.role === "user"
-                      ? "ml-6 bg-amber-50 text-slate-900 ring-1 ring-amber-200/80"
+                      ? "ml-6 bg-emerald-50 text-slate-900 ring-1 ring-emerald-200/80"
                       : "mr-4 bg-slate-50 text-slate-700 ring-1 ring-slate-200/80",
                   )}
                 >
@@ -139,7 +124,7 @@ export function AiAssistantDock() {
                 <button
                   key={s}
                   type="button"
-                  className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:border-amber-300 hover:text-slate-900"
+                  className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:border-emerald-300 hover:text-slate-900"
                   onClick={() => send(s)}
                 >
                   {s}
@@ -160,14 +145,14 @@ export function AiAssistantDock() {
                 id="ek-assistant-input"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask anything…"
-                className="min-h-10 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none ring-amber-500/0 transition-shadow focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30"
+                placeholder="Ask about kits, pilots, or orders…"
+                className="min-h-10 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none ring-emerald-500/0 transition-shadow focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
                 autoComplete="off"
               />
               <button
                 type="submit"
                 disabled={pending}
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-amber-300 shadow-md hover:bg-slate-800 disabled:opacity-50"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-900/20 hover:bg-emerald-500 disabled:opacity-50"
                 aria-label="Send"
               >
                 <Send className="h-4 w-4" />
@@ -181,7 +166,7 @@ export function AiAssistantDock() {
         aria-expanded={open}
         aria-controls={open ? panelId : undefined}
         onClick={() => setOpen((v) => !v)}
-        className="pointer-events-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 shadow-lg shadow-amber-900/25 ring-2 ring-white/80 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
+        className="pointer-events-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-900/30 ring-2 ring-white/80 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
         aria-label={open ? "Close assistant" : "Open AI assistant"}
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" strokeWidth={2} />}

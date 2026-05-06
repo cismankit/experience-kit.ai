@@ -1,11 +1,11 @@
 import { AiAssistantDock } from "@/components/ai-assistant-dock";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { PublicNav } from "@/components/product/public-nav";
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <SiteHeader />
+      <PublicNav />
       {children}
       <SiteFooter />
       <AiAssistantDock />

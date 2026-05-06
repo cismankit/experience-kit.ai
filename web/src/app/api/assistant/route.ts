@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
 
-type Body = { message?: string };
+const bodySchema = z.object({
+  message: z.string().min(1).max(1500),
+  workspaceSlug: z.string().min(1).optional(),
+});
 
 function replyFor(text: string): string {
   const m = text.toLowerCase();
@@ -23,15 +29,48 @@ function replyFor(text: string): string {
 }
 
 export async function POST(req: Request) {
-  let body: Body;
+  let rawBody: unknown;
   try {
-    body = (await req.json()) as Body;
+    rawBody = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
-  const message = typeof body.message === "string" ? body.message.trim() : "";
-  if (!message) {
-    return NextResponse.json({ error: "message required" }, { status: 400 });
+
+  const parsed = bodySchema.safeParse(rawBody);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "message is required" }, { status: 400 });
   }
-  return NextResponse.json({ reply: replyFor(message) });
+
+  const message = parsed.data.message.trim();
+  const session = await auth();
+
+  let workspaceId: string | null = session?.user?.workspaceId ?? null;
+  if (!workspaceId) {
+    const publicWorkspace = await db.workspace.findFirst({
+      where: { slug: parsed.data.workspaceSlug ?? "public-experiencekit" },
+      select: { id: true },
+    });
+    workspaceId = publicWorkspace?.id ?? null;
+  }
+
+  if (!workspaceId) {
+    return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
+  }
+
+  const reply = replyFor(message);
+  const interaction = await db.copilotInteraction.create({
+    data: {
+      workspaceId,
+      userId: session?.user?.id ?? null,
+      requestText: message,
+      responseText: reply,
+    },
+    select: { id: true, createdAt: true },
+  });
+
+  return NextResponse.json({
+    reply,
+    interactionId: interaction.id,
+    createdAt: interaction.createdAt.toISOString(),
+  });
 }

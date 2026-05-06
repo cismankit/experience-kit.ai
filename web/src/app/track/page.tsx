@@ -59,7 +59,9 @@ export default function TrackPage() {
             </span>
             <div>
               <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">Track your order</h1>
-              <p className="mt-1 text-sm text-slate-600">Order ID + email on file. Demo responses until OMS is wired.</p>
+              <p className="mt-1 text-sm text-slate-600">
+                Use the order ID from your confirmation email and the email address on the order.
+              </p>
             </div>
           </div>
 
@@ -74,7 +76,8 @@ export default function TrackPage() {
                   value={orderId}
                   onChange={(e) => setOrderId(e.target.value)}
                   className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-amber-500/0 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/25"
-                  placeholder="e.g. EK-20481"
+                  placeholder=""
+                  title="Order ID from your confirmation email"
                   autoComplete="off"
                   required
                 />
@@ -89,7 +92,8 @@ export default function TrackPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-amber-500/0 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/25"
-                  placeholder="you@school.org"
+                  placeholder=""
+                  title="Email address used when you placed the order"
                   autoComplete="email"
                   required
                 />

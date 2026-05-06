@@ -1,0 +1,217 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkspaceType {
+  family
+  school
+}
+
+enum WorkspacePlan {
+  starter
+  growth
+  district
+}
+
+enum MembershipRole {
+  learner
+  parent
+  educator
+  school_admin
+}
+
+enum SubscriptionStatus {
+  active
+  trialing
+  canceled
+  past_due
+}
+
+enum OrderStatus {
+  processing
+  in_transit
+  delivered
+  canceled
+}
+
+enum TicketStatus {
+  open
+  in_progress
+  resolved
+  closed
+}
+
+enum TicketPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+model User {
+  id            String               @id @default(cuid())
+  name          String?
+  email         String               @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  memberships   WorkspaceMembership[]
+  copilotRuns   CopilotInteraction[]
+  tickets       SupportTicket[]      @relation("TicketRequester")
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Workspace {
+  id            String               @id @default(cuid())
+  slug          String               @unique
+  name          String
+  type          WorkspaceType
+  plan          WorkspacePlan
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  memberships   WorkspaceMembership[]
+  seats         Seat[]
+  subscriptions Subscription[]
+  orders        CommerceOrder[]
+  copilotRuns   CopilotInteraction[]
+  tickets       SupportTicket[]
+}
+
+model WorkspaceMembership {
+  id          String         @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        MembershipRole
+  createdAt   DateTime       @default(now())
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+}
+
+model Seat {
+  id          String    @id @default(cuid())
+  workspaceId String
+  label       String
+  assignedTo  String?
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id               String             @id @default(cuid())
+  workspaceId      String
+  provider         String
+  providerRef      String?
+  status           SubscriptionStatus
+  seatsPurchased   Int
+  currentPeriodEnd DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  workspace        Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model CommerceOrder {
+  id             String            @id @default(cuid())
+  orderNumber    String            @unique
+  workspaceId    String
+  customerEmail  String
+  kitName        String
+  status         OrderStatus       @default(processing)
+  externalRef    String?
+  placedAt       DateTime          @default(now())
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  workspace      Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  supportTickets SupportTicket[]
+
+  @@index([workspaceId])
+  @@index([customerEmail])
+}
+
+model CopilotInteraction {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  userId       String?
+  requestText  String
+  responseText String
+  createdAt    DateTime  @default(now())
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user         User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, createdAt])
+}
+
+model SupportTicket {
+  id            String       @id @default(cuid())
+  workspaceId   String
+  requesterId   String?
+  requesterName String
+  requesterEmail String
+  role          String?
+  category      String
+  message       String
+  status        TicketStatus @default(open)
+  priority      TicketPriority @default(medium)
+  orderId       String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  workspace     Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  requester     User?        @relation("TicketRequester", fields: [requesterId], references: [id], onDelete: SetNull)
+  order         CommerceOrder? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, status])
+  @@index([requesterEmail])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

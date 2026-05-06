@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  async redirects() {
+    return [{ source: "/find-kit", destination: "/find-my-kit", permanent: true }];
+  },
 };
 
 export default nextConfig;

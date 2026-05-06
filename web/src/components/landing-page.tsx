@@ -1,40 +1,53 @@
-import { ApproachSection } from "@/components/sections/approach-section";
 import { ContactSection } from "@/components/sections/contact-section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { HeroSection } from "@/components/sections/hero-section";
-import { HomeKitsSpotlight } from "@/components/sections/home-kits-spotlight";
-import { KitFinderSection } from "@/components/sections/kit-finder-section";
-import { LearnerDashboardPreviewSection } from "@/components/sections/learner-dashboard-preview-section";
-import { LearningCtaSection } from "@/components/sections/learning-cta-section";
-import { ParentTrustSection } from "@/components/sections/parent-trust-section";
-import { PersonaJourneySection } from "@/components/sections/persona-journey-section";
-import { PlatformBentoSection } from "@/components/sections/platform-bento-section";
 import { PortfolioProofSection } from "@/components/sections/portfolio-proof-section";
-import { SchoolPilotSection } from "@/components/sections/school-pilot-section";
-import { TodayMissionSection } from "@/components/sections/today-mission-section";
-import { SocialProofStrip } from "@/components/social-proof-strip";
-import { TrustIconsStrip } from "@/components/trust-icons-strip";
+import { DailyMissionPreview } from "@/components/home/daily-mission-preview";
+import { HomeContextBar } from "@/components/home/home-context-bar";
+import { HomePersonaUrlSync } from "@/components/home/home-persona-url-sync";
+import { HomeScrollChrome } from "@/components/home/home-scroll-chrome";
+import { HomeTaskShell } from "@/components/home/home-task-shell";
+import { HowItWorksStepper } from "@/components/home/how-it-works-stepper";
+import { KitMatchSection } from "@/components/home/kit-match-section";
+import { PersonaProvider } from "@/components/home/persona-provider";
+import { PersonaSelectorSection } from "@/components/home/persona-selector-section";
+import { PilotTimelineSection } from "@/components/home/pilot-timeline-section";
+import { SchoolsLaneHero } from "@/components/home/schools-lane-hero";
+import { HomeSchoolPilotCta } from "@/components/home/home-school-pilot-cta";
 
-/** Home page section order optimized for “daily habit” before platform depth. */
+/** Task lanes + merged match flow: less scroll-hopping, clearer school path. */
 export function LandingPage() {
   return (
-    <>
-      <HeroSection />
-      <SocialProofStrip />
-      <PersonaJourneySection />
-      <TrustIconsStrip />
-      <TodayMissionSection />
-      <PlatformBentoSection />
-      <KitFinderSection />
-      <LearnerDashboardPreviewSection />
-      <PortfolioProofSection />
-      <ParentTrustSection />
-      <SchoolPilotSection />
-      <HomeKitsSpotlight />
-      <ApproachSection />
-      <LearningCtaSection />
-      <FaqSection />
-      <ContactSection />
-    </>
+    <PersonaProvider>
+      <HomeScrollChrome />
+      <HomePersonaUrlSync />
+      <HomeTaskShell
+        discover={
+          <>
+            <HeroSection />
+            <HomeContextBar />
+            <PersonaSelectorSection />
+            <DailyMissionPreview />
+            <KitMatchSection />
+            <HowItWorksStepper />
+            <PortfolioProofSection />
+            <HomeSchoolPilotCta />
+            <FaqSection defaultGroup="families" anchorId="faq" />
+            <ContactSection defaultLane="discover" anchorId="contact" />
+          </>
+        }
+        schools={
+          <>
+            <SchoolsLaneHero contactHref="/#contact-school" />
+            <PilotTimelineSection
+              contactHref="/#contact-school"
+              faqHref="/#faq-school"
+            />
+            <FaqSection defaultGroup="schools" anchorId="faq-school" />
+            <ContactSection defaultLane="school" anchorId="contact-school" />
+          </>
+        }
+      />
+    </PersonaProvider>
   );
 }

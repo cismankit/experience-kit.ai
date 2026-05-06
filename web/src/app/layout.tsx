@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Source_Serif_4 } from "next/font/google";
 import { SkipLink } from "@/components/skip-link";
 import { SiteChrome } from "@/components/site-chrome";
 import "./globals.css";
@@ -12,6 +12,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-ek-serif",
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  display: "swap",
 });
 
 const siteUrl = "https://experiencekit.ai";
@@ -114,7 +121,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full scroll-pt-[7.5rem] sm:scroll-pt-32`}
+      className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} h-full scroll-pt-[7.5rem] sm:scroll-pt-32`}
     >
       <body className="isolate min-h-full flex flex-col bg-stone-50 font-sans text-slate-900 antialiased">
         <SkipLink />

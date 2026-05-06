@@ -19,6 +19,9 @@ export type KitContentsItem = { label: string; icon: LucideIcon };
 
 export type KitDifficulty = "Gentle" | "Moderate" | "Stretch" | "Ambitious";
 
+export type KitGoalTag = "creativity" | "stem" | "ai-literacy" | "career" | "confidence" | "portfolio";
+export type KitSettingTag = "home" | "classroom" | "workshop" | "club";
+
 /** Extended kit definition for marketing + commerce surfaces */
 export type KitProduct = {
   id: string;
@@ -33,12 +36,20 @@ export type KitProduct = {
   bestFor: string;
   /** Typical minutes for mission 1 */
   firstMissionMinutes: number;
+  /** Mission 01 title + hook for marketing surfaces */
+  firstMissionTitle: string;
+  firstMissionSummary: string;
   dailyMissionCount: number;
   finalArtifact: string;
   skillOutcomes: string[];
   difficulty: KitDifficulty;
   /** Plain-language outcome learners ship */
   whatLearnerBuilds: string;
+  /** Catalog filters (/kits) — inclusive age span, approximate from positioning copy */
+  filterGoals: KitGoalTag[];
+  filterSettings: KitSettingTag[];
+  filterAgeMin: number;
+  filterAgeMax: number;
 };
 
 export const KITS: KitProduct[] = [
@@ -53,12 +64,19 @@ export const KITS: KitProduct[] = [
     ageRange: "8–14 (families can adapt)",
     bestFor: "First-time kit families, homerooms, and soft pilots",
     firstMissionMinutes: 25,
+    firstMissionTitle: "Mission 01 · Open the box with intention",
+    firstMissionSummary:
+      "Set up a calm build zone, name one constraint you’ll honor this week, and ship a micro-artifact that proves you started—not just unboxed.",
     dailyMissionCount: 21,
     finalArtifact: "A personal learning journal + first showcase build",
     skillOutcomes: ["Confidence", "Routines", "Reflection", "Presentation basics"],
     difficulty: "Gentle",
     whatLearnerBuilds:
       "A daily reflection habit, one showcase artifact, and a repeatable “plan → build → share” loop.",
+    filterGoals: ["creativity", "confidence", "portfolio"],
+    filterSettings: ["home", "classroom"],
+    filterAgeMin: 8,
+    filterAgeMax: 14,
     contents: [
       { label: "Starter components & safe tools", icon: Box },
       { label: "Guided opener deck", icon: BookOpen },
@@ -79,12 +97,19 @@ export const KITS: KitProduct[] = [
     ageRange: "10–17",
     bestFor: "Creative confidence, design thinking, and portfolio pieces",
     firstMissionMinutes: 35,
+    firstMissionTitle: "Mission 01 · Frame the problem in the physical world",
+    firstMissionSummary:
+      "Turn a fuzzy idea into a tangible brief—sketch, label users, and pick one risky assumption to test with a cardboard-first prototype.",
     dailyMissionCount: 18,
     finalArtifact: "Prototype pack + critique storyboard",
     skillOutcomes: ["Ideation", "Feedback", "Iteration", "Storytelling"],
     difficulty: "Moderate",
     whatLearnerBuilds:
       "A tested prototype arc—sketches, lo-fi models, “what changed” narrative, and a share-ready demo.",
+    filterGoals: ["creativity", "portfolio", "career", "stem"],
+    filterSettings: ["home", "classroom", "workshop"],
+    filterAgeMin: 10,
+    filterAgeMax: 17,
     contents: [
       { label: "Tool-grade consumables", icon: Box },
       { label: "Scale rulers & grids", icon: Ruler },
@@ -105,12 +130,19 @@ export const KITS: KitProduct[] = [
     ageRange: "11–18",
     bestFor: "STEM curiosity, makers, and clubs exploring signals & sensing",
     firstMissionMinutes: 40,
+    firstMissionTitle: "Mission 01 · Name your first signal",
+    firstMissionSummary:
+      "Pick one input you can observe, log two honest readings, and draw the simplest chain from cause to what you see—no jargon, just evidence.",
     dailyMissionCount: 24,
     finalArtifact: "Signal story + annotated observation log",
     skillOutcomes: ["Observation", "Systems thinking", "Documentation", "Explanation"],
     difficulty: "Stretch",
     whatLearnerBuilds:
       "A field notebook of observations, a mapped signal chain, and an explanation of cause and effect.",
+    filterGoals: ["stem", "ai-literacy", "confidence", "portfolio"],
+    filterSettings: ["home", "classroom", "workshop", "club"],
+    filterAgeMin: 11,
+    filterAgeMax: 18,
     contents: [
       { label: "Modular sensor tiles", icon: Cpu },
       { label: "Patch cables & bus", icon: Cable },
@@ -131,12 +163,19 @@ export const KITS: KitProduct[] = [
     ageRange: "14–20+",
     bestFor: "Career pathways, advanced cohorts, and capstone-style depth",
     firstMissionMinutes: 45,
+    firstMissionTitle: "Mission 01 · Map the system you’re entering",
+    firstMissionSummary:
+      "Stakeholders, incentives, and feedback loops on one page—then write a one-paragraph thesis a skeptical mentor could challenge kindly.",
     dailyMissionCount: 16,
     finalArtifact: "Systems brief + defense portfolio entry",
     skillOutcomes: ["Decision-making", "Stakeholder reasoning", "Evidence", "Ethics"],
     difficulty: "Ambitious",
     whatLearnerBuilds:
       "A defendable systems map, scenario decisions with rationale, and a portfolio-ready executive summary.",
+    filterGoals: ["career", "stem", "portfolio", "ai-literacy"],
+    filterSettings: ["classroom", "workshop", "home"],
+    filterAgeMin: 14,
+    filterAgeMax: 22,
     contents: [
       { label: "Systems map board", icon: Map },
       { label: "Scenario tokens", icon: Zap },

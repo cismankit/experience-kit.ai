@@ -12,7 +12,14 @@ Production-ready landing page for [ExperienceKit.ai](https://experiencekit.ai), 
 ```bash
 cd web
 npm install
+npm run db:migrate -- --name init_saas
+npm run db:seed
 ```
+
+Seeded local sign-in:
+- Email: `admin@experiencekit.ai`
+- Password: `Password123!`
+- Workspace slug: `north-ridge-school`
 
 ## Development
 
@@ -33,13 +40,17 @@ npm run build
 npm run start
 ```
 
+## Deploy (Vercel)
+
+From **`web/`** after linking: `npx vercel` (preview) or `npx vercel --prod`. In the Vercel dashboard, set **Root Directory** to **`web`** for Git-based builds so [`vercel.json`](./vercel.json) and Next.js paths resolve correctly (see repo root `README.md`).
+
 ## Project structure
 
 | Path | Purpose |
 |------|---------|
 | `src/app/` | App Router: `layout.tsx`, `page.tsx`, `kits/`, `track/`, `orders/`, `api/assistant`, `api/track`, `globals.css`, `robots.ts`, `sitemap.ts`, `opengraph-image.tsx` |
 | `src/components/` | UI primitives, site chrome, motion helpers, and landing sections |
-| `src/components/sections/` | Consolidated home sections (fewer, denser blocks—see `landing-page.tsx`) |
+| `src/components/sections/` | Home sections in use: hero, FAQ, contact, portfolio proof (see `landing-page.tsx`) |
 | `src/lib/` | Utilities (`cn`), shared UI helpers (`cardSurface`), navigation constants |
 
 ## SEO & discovery

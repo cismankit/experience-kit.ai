@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/container";
-import { KitCardEnhanced } from "@/components/kits/kit-card-enhanced";
-import { KITS } from "@/lib/kits-catalog";
+import { KitsPageCatalog } from "@/components/kits/kits-page-catalog";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
@@ -20,23 +19,19 @@ export default function KitsPage() {
             Pick a learning journey—not a mystery box.
           </h1>
           <p className="mt-4 text-pretty text-lg leading-relaxed text-slate-600">
-            Every kit lists missions, age fit, what ships in the box, and what learners build. Request a quote when
-            you&apos;re ready—we&apos;ll align pacing and cohort size with your team.
+            Filter by age, goal, and setting—then open a journey for the first mission, what ships, and the capstone
+            learners work toward.
           </p>
           <div className="mt-8 flex flex-wrap gap-2">
-            <Button variant="primary" size="md" href="/#contact">
-              Request quote
+            <Button variant="primary" size="md" href="/find-my-kit">
+              Kit finder
             </Button>
-            <Button variant="outline" size="md" href="/track" className="bg-white">
-              Track an order
+            <Button variant="outline" size="md" href="/support" className="bg-white">
+              Request quote
             </Button>
           </div>
         </div>
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
-          {KITS.map((kit) => (
-            <KitCardEnhanced key={kit.id} kit={kit} variant="catalog" />
-          ))}
-        </div>
+        <KitsPageCatalog />
       </Container>
     </main>
   );

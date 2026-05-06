@@ -162,7 +162,7 @@ export function KitCardEnhanced({ kit, variant = "spotlight" }: KitCardEnhancedP
           <Button variant="primary" size="md" href={`/kits#${kit.id}`} className="w-full sm:w-auto">
             View full journey
           </Button>
-          <Button variant="secondary" size="md" href="/#contact" className="w-full sm:w-auto">
+          <Button variant="secondary" size="md" href="/support#contact" className="w-full sm:w-auto">
             Request quote
           </Button>
         </div>
@@ -172,7 +172,7 @@ export function KitCardEnhanced({ kit, variant = "spotlight" }: KitCardEnhancedP
             kit page
           </Link>
           . Questions?{" "}
-          <Link href="/#contact" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
+          <Link href="/support#contact" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
             Talk with our team
           </Link>
           .
