@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireApiAuth } from "@/lib/api-auth";
 import { db } from "@/lib/db";
+import { requestContext } from "@/lib/observability";
 
 const payloadSchema = z.object({
   objective: z.enum(["modernize", "launch", "scale", "stabilize", "transform"]),
@@ -33,6 +34,23 @@ function levelFromScore(score: number) {
   if (score < 65) return "developing";
   if (score < 82) return "maturing";
   return "advanced";
+}
+
+function recommendedKitForObjective(objective: z.infer<typeof payloadSchema>["objective"]) {
+  switch (objective) {
+    case "modernize":
+      return "design-sprint-kit";
+    case "launch":
+      return "launch-pad-core";
+    case "scale":
+      return "systems-navigator";
+    case "stabilize":
+      return "signal-lab";
+    case "transform":
+      return "systems-navigator";
+    default:
+      return "launch-pad-core";
+  }
 }
 
 async function buildPlan(ctx: { workspaceId: string }, input: z.infer<typeof payloadSchema>) {
@@ -108,6 +126,8 @@ async function buildPlan(ctx: { workspaceId: string }, input: z.infer<typeof pay
         ? "Plan seat expansion in the next billing cycle to support growth."
         : "Current seat capacity is healthy for planned onboarding.";
 
+  const recommendedKitId = recommendedKitForObjective(input.objective);
+
   const plan = {
     workspace: {
       id: workspace.id,
@@ -141,9 +161,19 @@ async function buildPlan(ctx: { workspaceId: string }, input: z.infer<typeof pay
       paymentRecommendation,
       nextActions: [
         "Launch workspace onboarding with role-specific paths",
+        "Move into kit selection and confirm your recommended path",
         "Run first guided mission and capture baseline evidence",
         "Review transformation score and subscription fit at day 30",
       ],
+      journeyLinks: {
+        onboarding: "/onboarding",
+        kitFinder: `/find-my-kit?recommended=${recommendedKitId}&objective=${input.objective}`,
+        missions: "/missions?source=onboarding",
+        support: "/support?topic=onboarding_help",
+      },
+    },
+    recommendation: {
+      kitId: recommendedKitId,
     },
   };
 
@@ -154,7 +184,8 @@ async function buildPlan(ctx: { workspaceId: string }, input: z.infer<typeof pay
   };
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const obs = requestContext(req, "api.onboarding.get");
   const authResult = await requireApiAuth();
   if (!authResult.ok) return authResult.response;
   const ctx = authResult.context;
@@ -170,7 +201,8 @@ export async function GET() {
     }),
   ]);
 
-  return NextResponse.json({
+  obs.log("loaded_latest_plan", { workspaceId: ctx.workspaceId });
+  return obs.json({
     draft:
       latestDraft == null
         ? null
@@ -194,6 +226,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const obs = requestContext(req, "api.onboarding.post");
   const authResult = await requireApiAuth();
   if (!authResult.ok) return authResult.response;
   const ctx = authResult.context;
@@ -201,7 +234,8 @@ export async function POST(req: Request) {
   const json = await req.json().catch(() => null);
   const parsed = saveSchema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid onboarding payload", details: parsed.error.flatten() }, { status: 400 });
+    obs.log("invalid_payload");
+    return obs.json({ error: "Invalid onboarding payload", details: parsed.error.flatten() }, { status: 400 });
   }
 
   const { mode, payload } = parsed.data;
@@ -220,7 +254,8 @@ export async function POST(req: Request) {
         inputState: payload,
       },
     });
-    return NextResponse.json({ saved: true, draftId: draft.id, version: draft.version });
+    obs.log("saved_draft", { workspaceId: ctx.workspaceId, version: draft.version });
+    return obs.json({ saved: true, draftId: draft.id, version: draft.version });
   }
 
   const built = await buildPlan(ctx, payload);
@@ -238,7 +273,22 @@ export async function POST(req: Request) {
     },
   });
 
-  return NextResponse.json({
+  await db.recommendationSnapshot.create({
+    data: {
+      workspaceId: ctx.workspaceId,
+      userId: ctx.userId,
+      source: "onboarding_plan",
+      recommendedKitId: built.plan.recommendation.kitId,
+      confidence: Math.min(95, Math.max(65, Math.round(built.maturityScore * 0.9))),
+      rationale: {
+        objective: payload.objective,
+        maturityLevel: built.plan.maturity.level,
+      },
+    },
+  });
+
+  obs.log("generated_plan", { workspaceId: ctx.workspaceId, version: record.version, maturityScore: built.maturityScore });
+  return obs.json({
     ...built.plan,
     persistence: {
       planId: record.id,

@@ -36,7 +36,14 @@ type PlanResponse = {
     phases: { title: string; activities: string[] }[];
     paymentRecommendation: string;
     nextActions: string[];
+    journeyLinks?: {
+      onboarding: string;
+      kitFinder: string;
+      missions: string;
+      support: string;
+    };
   };
+  recommendation?: { kitId: string };
   persistence?: {
     planId: string;
     version: number;
@@ -229,6 +236,11 @@ export function OnboardingWizard() {
         return;
       }
       setDraftMeta({ version: json.version as number, updatedAt: new Date().toISOString() });
+      void fetch("/api/journey/progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentStage: "onboarding", completedStages: ["onboarding"] }),
+      });
     } catch {
       setError("Network issue while saving onboarding progress.");
     } finally {
@@ -251,6 +263,15 @@ export function OnboardingWizard() {
         return;
       }
       setPlan(json as PlanResponse);
+      void fetch("/api/journey/progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currentStage: "kit",
+          completedStages: ["onboarding"],
+          recommendedKitId: (json as PlanResponse).recommendation?.kitId,
+        }),
+      });
     } catch {
       setError("Network issue while generating your target-state plan.");
     } finally {
@@ -261,7 +282,7 @@ export function OnboardingWizard() {
   return (
     <main id="top" className="flex-1 border-b border-slate-200/80 bg-gradient-to-b from-white via-stone-50/30 to-white">
       <Container className="py-10 sm:py-12 lg:py-14">
-        <div className="max-w-3xl">
+        <div className="ek-reveal-up max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Guided onboarding</p>
           <h1 className="mt-2 text-balance text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
             Assess your current state and generate a transformation plan
@@ -278,7 +299,7 @@ export function OnboardingWizard() {
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)]">
-          <section className={cn(cardSurface(), "rounded-2xl p-6 sm:p-7")} aria-labelledby="onboarding-step-heading">
+          <section className={cn(cardSurface(), "ek-reveal-up ek-reveal-up-delay-1 rounded-2xl p-6 sm:p-7")} aria-labelledby="onboarding-step-heading">
             <div className="flex items-center justify-between gap-3">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Step {step + 1} of {total}
@@ -343,7 +364,7 @@ export function OnboardingWizard() {
             {error ? <p className="mt-3 text-sm font-medium text-red-600">{error}</p> : null}
           </section>
 
-          <aside className={cn(cardSurface(), "rounded-2xl p-6 sm:p-7")} aria-live="polite">
+          <aside className={cn(cardSurface(), "ek-reveal-up ek-reveal-up-delay-2 rounded-2xl p-6 sm:p-7")} aria-live="polite">
             <h2 className="text-xl font-semibold text-slate-900">Recommended target state</h2>
             {!plan ? (
               <p className="mt-3 text-sm leading-relaxed text-slate-600">
@@ -392,6 +413,29 @@ export function OnboardingWizard() {
                       <li key={item}>• {item}</li>
                     ))}
                   </ul>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    href={plan.targetStatePlan.journeyLinks?.kitFinder ?? "/find-my-kit"}
+                  >
+                    Continue to kit selection
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    href={plan.targetStatePlan.journeyLinks?.missions ?? "/missions"}
+                  >
+                    Start mission track
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    href={plan.targetStatePlan.journeyLinks?.support ?? "/support"}
+                  >
+                    Get onboarding support
+                  </Button>
                 </div>
               </>
             )}
