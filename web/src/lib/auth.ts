@@ -46,7 +46,10 @@ export const authOptions: NextAuthOptions = {
         const valid = await bcrypt.compare(password, user.passwordHash);
         if (!valid) return null;
 
-        const membership = user.memberships.find((m) => m.workspace.slug === workspaceSlug);
+        const membership = user.memberships.find(
+          (m: { workspace: { slug: string }; workspaceId: string; role: MembershipRole }) =>
+            m.workspace.slug === workspaceSlug,
+        );
         if (!membership) return null;
 
         return {
