@@ -1,8 +1,9 @@
-import { TicketPriority, TicketStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireApiAuth } from "@/lib/api-auth";
 import { db } from "@/lib/db";
+
+const ticketStatusSchema = z.enum(["open", "in_progress", "resolved", "closed"]);
 
 const createTicketSchema = z.object({
   requesterName: z.string().min(1),
@@ -21,13 +22,14 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const status = url.searchParams.get("status");
+  const statusFilter = status ? ticketStatusSchema.safeParse(status) : null;
   const category = url.searchParams.get("category");
   const limit = Math.min(Number(url.searchParams.get("limit") ?? "20"), 100);
 
   const tickets = await db.supportTicket.findMany({
     where: {
       workspaceId: authResult.context.workspaceId,
-      ...(status ? { status: status as TicketStatus } : {}),
+      ...(statusFilter?.success ? { status: statusFilter.data } : {}),
       ...(category ? { category } : {}),
     },
     include: {
@@ -89,7 +91,7 @@ export async function POST(req: Request) {
       role: parsed.data.role,
       category: parsed.data.category,
       message: parsed.data.message,
-      priority: (parsed.data.priority as TicketPriority | undefined) ?? "medium",
+      priority: parsed.data.priority ?? "medium",
       orderId: linkedOrder?.id ?? null,
     },
   });
