@@ -53,9 +53,9 @@ const tabCopy: Record<
     title: "Volume-ready without diluting the experience",
     body: "Districts and networks reorder, track, and replenish through the same surface you use for pilots.",
     bullets: [
-      "Batch-friendly manifests + spare-part SKUs",
-      "Track and Orders in the header mirror enterprise expectations",
-      "Support routing for POs, pilots, and custom waves",
+      "Batch-friendly manifests with clear spare-part lines for busy labs",
+      "Track and order history stay in the same place you run pilots from",
+      "Support routing for purchase orders, pilots, and custom kit waves",
     ],
   },
 };

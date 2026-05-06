@@ -17,6 +17,9 @@ import {
 
 export type KitContentsItem = { label: string; icon: LucideIcon };
 
+export type KitDifficulty = "Gentle" | "Moderate" | "Stretch" | "Ambitious";
+
+/** Extended kit definition for marketing + commerce surfaces */
 export type KitProduct = {
   id: string;
   name: string;
@@ -26,16 +29,88 @@ export type KitProduct = {
   contents: KitContentsItem[];
   /** Tailwind gradient / ring utility fragment for card chrome */
   accent: string;
+  ageRange: string;
+  bestFor: string;
+  /** Typical minutes for mission 1 */
+  firstMissionMinutes: number;
+  dailyMissionCount: number;
+  finalArtifact: string;
+  skillOutcomes: string[];
+  difficulty: KitDifficulty;
+  /** Plain-language outcome learners ship */
+  whatLearnerBuilds: string;
 };
 
 export const KITS: KitProduct[] = [
   {
+    id: "launch-pad-core",
+    name: "Launch Pad Core",
+    tagline: "Orient · build · ship",
+    blurb:
+      "A welcoming first journey—clear rituals, tiny wins, and a rhythm families can repeat without burnout.",
+    tier: "Starter",
+    accent: "from-amber-400/35 via-stone-200/20 to-orange-300/25 ring-amber-300/40",
+    ageRange: "8–14 (families can adapt)",
+    bestFor: "First-time kit families, homerooms, and soft pilots",
+    firstMissionMinutes: 25,
+    dailyMissionCount: 21,
+    finalArtifact: "A personal learning journal + first showcase build",
+    skillOutcomes: ["Confidence", "Routines", "Reflection", "Presentation basics"],
+    difficulty: "Gentle",
+    whatLearnerBuilds:
+      "A daily reflection habit, one showcase artifact, and a repeatable “plan → build → share” loop.",
+    contents: [
+      { label: "Starter components & safe tools", icon: Box },
+      { label: "Guided opener deck", icon: BookOpen },
+      { label: "QR onboarding path", icon: QrCode },
+      { label: "Progress stickers & badges", icon: Sparkles },
+      { label: "AI coach prompts (light)", icon: Bot },
+      { label: "Family & classroom guide", icon: Layers },
+    ],
+  },
+  {
+    id: "design-sprint-kit",
+    name: "Design Sprint Kit",
+    tagline: "Sketch · prototype · test",
+    blurb:
+      "Turn messy ideas into tangible prototypes—iterate fast with critique-ready artifacts and caring structure.",
+    tier: "Discovery",
+    accent: "from-amber-500/30 via-orange-400/15 to-rose-400/20 ring-amber-400/35",
+    ageRange: "10–17",
+    bestFor: "Creative confidence, design thinking, and portfolio pieces",
+    firstMissionMinutes: 35,
+    dailyMissionCount: 18,
+    finalArtifact: "Prototype pack + critique storyboard",
+    skillOutcomes: ["Ideation", "Feedback", "Iteration", "Storytelling"],
+    difficulty: "Moderate",
+    whatLearnerBuilds:
+      "A tested prototype arc—sketches, lo-fi models, “what changed” narrative, and a share-ready demo.",
+    contents: [
+      { label: "Tool-grade consumables", icon: Box },
+      { label: "Scale rulers & grids", icon: Ruler },
+      { label: "Layered brief cards", icon: Layers },
+      { label: "Presentation mat", icon: Sparkles },
+      { label: "AI critique prompts", icon: Bot },
+      { label: "Ship checklist", icon: Target },
+    ],
+  },
+  {
     id: "signal-lab",
     name: "Signal Lab",
     tagline: "Sense · map · explain",
-    blurb: "Builds that behave like real systems—inputs, signals, and readable outcomes.",
+    blurb:
+      "Learners wire simple inputs into readable outcomes—building intuition for how real systems behave.",
     tier: "Explorer",
     accent: "from-violet-500/25 via-amber-400/15 to-sky-500/20 ring-violet-400/30",
+    ageRange: "11–18",
+    bestFor: "STEM curiosity, makers, and clubs exploring signals & sensing",
+    firstMissionMinutes: 40,
+    dailyMissionCount: 24,
+    finalArtifact: "Signal story + annotated observation log",
+    skillOutcomes: ["Observation", "Systems thinking", "Documentation", "Explanation"],
+    difficulty: "Stretch",
+    whatLearnerBuilds:
+      "A field notebook of observations, a mapped signal chain, and an explanation of cause and effect.",
     contents: [
       { label: "Modular sensor tiles", icon: Cpu },
       { label: "Patch cables & bus", icon: Cable },
@@ -46,28 +121,22 @@ export const KITS: KitProduct[] = [
     ],
   },
   {
-    id: "design-sprint-kit",
-    name: "Design Sprint Kit",
-    tagline: "Sketch · prototype · test",
-    blurb: "Premium physical + digital prompts for rapid iteration and critique-ready artifacts.",
-    tier: "Discovery",
-    accent: "from-amber-500/30 via-orange-400/15 to-rose-400/20 ring-amber-400/35",
-    contents: [
-      { label: "Tool-grade consumables", icon: Box },
-      { label: "Scale rulers & grids", icon: Ruler },
-      { label: "Layered brief cards", icon: Layers },
-      { label: "Presentation mat", icon: Sparkles },
-      { label: "AI critique mode", icon: Bot },
-      { label: "Ship checklist", icon: Target },
-    ],
-  },
-  {
     id: "systems-navigator",
     name: "Systems Navigator",
     tagline: "Model · decide · defend",
-    blurb: "For learners ready to own tradeoffs, feedback loops, and stakeholder-ready narratives.",
+    blurb:
+      "For learners ready to own trade-offs—feedback loops, stakeholder narratives, and evidence-backed choices.",
     tier: "Advanced",
     accent: "from-sky-500/25 via-slate-500/10 to-emerald-500/20 ring-sky-400/30",
+    ageRange: "14–20+",
+    bestFor: "Career pathways, advanced cohorts, and capstone-style depth",
+    firstMissionMinutes: 45,
+    dailyMissionCount: 16,
+    finalArtifact: "Systems brief + defense portfolio entry",
+    skillOutcomes: ["Decision-making", "Stakeholder reasoning", "Evidence", "Ethics"],
+    difficulty: "Ambitious",
+    whatLearnerBuilds:
+      "A defendable systems map, scenario decisions with rationale, and a portfolio-ready executive summary.",
     contents: [
       { label: "Systems map board", icon: Map },
       { label: "Scenario tokens", icon: Zap },
@@ -77,26 +146,15 @@ export const KITS: KitProduct[] = [
       { label: "Rubric + self-audit", icon: Target },
     ],
   },
-  {
-    id: "launch-pad-core",
-    name: "Launch Pad Core",
-    tagline: "Orient · build · ship",
-    blurb: "The on-ramp kit—foundations, habits, and first wins without overwhelming the room.",
-    tier: "Starter",
-    accent: "from-amber-400/35 via-stone-200/20 to-orange-300/25 ring-amber-300/40",
-    contents: [
-      { label: "Starter components", icon: Box },
-      { label: "Guided opener deck", icon: BookOpen },
-      { label: "QR onboarding path", icon: QrCode },
-      { label: "Progress stickers", icon: Sparkles },
-      { label: "AI coach (light)", icon: Bot },
-      { label: "Family / class guide", icon: Layers },
-    ],
-  },
 ];
 
 export function getKitById(id: string): KitProduct | undefined {
   return KITS.find((k) => k.id === id);
 }
 
-export const FEATURED_KIT_IDS = ["signal-lab", "design-sprint-kit", "systems-navigator"] as const;
+export const FEATURED_KIT_IDS = [
+  "launch-pad-core",
+  "design-sprint-kit",
+  "signal-lab",
+  "systems-navigator",
+] as const;

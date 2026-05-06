@@ -18,7 +18,7 @@ const siteUrl = "https://experiencekit.ai";
 
 const metaTitle = "ExperienceKit.ai | AI-Powered Learning Kits";
 const metaDescription =
-  "ExperienceKit.ai ships premium AI-powered learning kits with transparent manifests, order tracking, and a built-in copilot—built for schools, homes, and future-ready programs.";
+  "Hands-on learning kits, daily missions, AI reflection, and portfolio-ready proof—built for parents, learners, educators, and schools who want a warm, future-ready path.";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -38,7 +38,7 @@ const jsonLd = {
       name: "ExperienceKit.ai",
       url: siteUrl,
       description:
-        "AI-powered, hands-on learning kits that combine guided exploration with practical outcomes for schools and families.",
+        "AI-powered, hands-on learning kits with daily missions, reflection, and portfolio-ready outcomes for families, schools, and learners.",
     },
   ],
 } as const;

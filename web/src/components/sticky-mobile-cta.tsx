@@ -41,10 +41,10 @@ export function StickyMobileCta() {
     >
       <div className="mx-auto flex w-full max-w-lg gap-2">
         <Button variant="primary" size="md" className="min-h-12 flex-1 shadow-md" href="/kits">
-          Shop
+          Browse kits
         </Button>
         <Button variant="outline" size="md" className="min-h-12 flex-1 bg-white" href="/track">
-          Track
+          Track order
         </Button>
       </div>
     </nav>

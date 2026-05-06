@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { KitCard } from "@/components/kits/kit-card";
+import { KitCardEnhanced } from "@/components/kits/kit-card-enhanced";
 import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { FEATURED_KIT_IDS, KITS } from "@/lib/kits-catalog";
@@ -11,7 +11,7 @@ export function HomeKitsSpotlight() {
   return (
     <section
       id="kits-spotlight"
-      className="scroll-mt-28 border-b border-slate-200/70 bg-stone-50 py-12 sm:py-14 lg:py-16"
+      className="scroll-mt-28 border-b border-slate-200/70 bg-stone-50 py-14 sm:py-16 lg:py-20"
       aria-labelledby="kits-spotlight-heading"
     >
       <Container>
@@ -19,27 +19,27 @@ export function HomeKitsSpotlight() {
           <SectionHeading
             id="kits-spotlight-heading"
             eyebrow="Catalog"
-            title="Kits you can see before you buy"
+            title="Find the journey that fits"
             description={
               <p className="max-w-xl">
-                Every SKU lists what ships in the box—components, cards, digital spine, and AI touchpoints—so procurement
-                and learners know exactly what they’re getting.
+                Each kit spells out ages, cadence, artifacts, and what learners build—so families and teams can decide
+                with confidence before requesting a quote.
               </p>
             }
           />
           <Button variant="secondary" size="md" href="/kits" className="w-full shrink-0 sm:w-auto">
-            View full shop
+            Browse all kits
           </Button>
         </div>
-        <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {featured.map((kit) => (kit ? <KitCard key={kit.id} kit={kit} /> : null))}
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          {featured.map((kit) => (kit ? <KitCardEnhanced key={kit.id} kit={kit} variant="spotlight" /> : null))}
         </div>
-        <p id="kits" className="mt-8 scroll-mt-32 text-center text-xs text-slate-500">
-          Need a custom wave? Mention volume and timeline in{" "}
+        <p id="kits" className="mt-10 scroll-mt-32 text-center text-sm text-slate-500">
+          Piloting at scale or need a custom wave? Share timing and learners in{" "}
           <Link href="/#contact" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
             Support
           </Link>
-          .
+          —we&apos;ll outline next steps.
         </p>
       </Container>
     </section>

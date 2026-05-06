@@ -11,12 +11,12 @@ export function SiteFooter() {
           <div className="max-w-md">
             <p className="text-lg font-semibold text-white">ExperienceKit.ai</p>
             <p className="mt-3 text-sm leading-relaxed text-slate-300">
-              Premium AI-powered kits with transparent manifests, modern tracking, and a copilot that speaks logistics
-              and learning—built for what comes next.
+              Hands-on kits, guided missions, AI reflection, and portfolio-ready proof—built for families, learners,
+              educators, and schools moving together into what&apos;s next.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <Button variant="primary" size="md" href="/kits">
-                Shop kits
+                Browse kits
               </Button>
               <Button variant="outline" size="md" href="/#contact" className="border-slate-600 bg-transparent text-white hover:bg-white/10">
                 Support
@@ -49,11 +49,11 @@ export function SiteFooter() {
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Ops</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Orders & tracking</p>
               <ul className="mt-4 space-y-2.5">
                 <li>
                   <Link href="/track" className="text-sm text-slate-300 hover:text-white">
-                    Track shipment
+                    Track order
                   </Link>
                 </li>
                 <li>
@@ -63,7 +63,7 @@ export function SiteFooter() {
                 </li>
                 <li>
                   <Link href="/kits" className="text-sm text-slate-300 hover:text-white">
-                    Catalog
+                    Kit catalog
                   </Link>
                 </li>
               </ul>
@@ -77,10 +77,10 @@ export function SiteFooter() {
                 Platform
               </Link>
               <Link href="/kits" className="text-slate-400 hover:text-white">
-                Shop
+                Kits
               </Link>
-              <Link href="/#approach" className="text-slate-400 hover:text-white">
-                Approach
+              <Link href="/#daily-missions" className="text-slate-400 hover:text-white">
+                Daily missions
               </Link>
               <Link href="/#faq" className="text-slate-400 hover:text-white">
                 FAQ
@@ -89,7 +89,7 @@ export function SiteFooter() {
                 Support
               </Link>
             </nav>
-            <p className="text-sm text-slate-500">Orders, tracking, and quotes—one stack.</p>
+            <p className="text-sm text-slate-500">Missions, reflection, proof—one journey.</p>
           </div>
           <div className="mt-6 flex flex-col gap-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-slate-400">© {new Date().getFullYear()} ExperienceKit.ai. All rights reserved.</p>

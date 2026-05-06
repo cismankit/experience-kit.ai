@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Package, Radar } from "lucide-react";
+import { ArrowRight, Compass, Images, Sparkles } from "lucide-react";
 import { AmbientOrbs } from "@/components/motion/ambient-orbs";
 import { HeroScene } from "@/components/motion/hero-scene";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,13 @@ import { Container } from "@/components/container";
 import { cn } from "@/lib/utils";
 import { cardSurface } from "@/lib/ui";
 
-const chips = ["Transparent manifests", "Track every shipment", "AI copilot included"] as const;
+const badges = [
+  "Hands-on kits",
+  "AI-guided reflection",
+  "Daily missions",
+  "Progress tracking",
+  "Portfolio-ready proof",
+] as const;
 
 export function HeroSection() {
   const reduce = useReducedMotion();
@@ -34,8 +40,8 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <Radar className="h-3.5 w-3.5" aria-hidden />
-              Ops-ready commerce
+              <Sparkles className="h-3.5 w-3.5" aria-hidden />
+              Learning, made tangible
             </motion.p>
             <motion.h1
               id="hero-heading"
@@ -44,9 +50,9 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.04 }}
             >
-              Kits built for velocity,{" "}
+              AI-powered learning kits that turn{" "}
               <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                shipped with precision
+                curiosity into daily action
               </span>
               .
             </motion.h1>
@@ -56,8 +62,8 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.08 }}
             >
-              See exactly what is inside each SKU, spin up quotes, track fulfillment, and let learners loose on tactile +
-              AI workflows—all from one surface.
+              ExperienceKit.ai combines hands-on materials, guided missions, AI reflection, family and educator support,
+              and portfolio-ready outcomes — so learners do not just study the future, they build it.
             </motion.p>
             <motion.ul
               className="mt-6 flex flex-wrap gap-2"
@@ -65,7 +71,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.12 }}
             >
-              {chips.map((t) => (
+              {badges.map((t) => (
                 <li
                   key={t}
                   className="rounded-full border border-slate-200/90 bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm"
@@ -81,17 +87,25 @@ export function HeroSection() {
               transition={{ duration: 0.45, delay: 0.16 }}
             >
               <Button variant="primary" size="lg" className="w-full min-[480px]:w-auto" href="/kits">
-                Shop kits
+                Find my kit
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Button>
-              <Button variant="outline" size="lg" className="w-full min-[480px]:w-auto bg-white" href="/track">
-                <Package className="h-4 w-4" aria-hidden />
-                Track order
-              </Button>
-              <Button variant="secondary" size="lg" className="w-full min-[480px]:w-auto" href="/#contact">
-                Talk to sales
+              <Button variant="outline" size="lg" className="w-full min-[480px]:w-auto bg-white" href="/#daily-missions">
+                <Compass className="h-4 w-4" aria-hidden />
+                Explore daily missions
               </Button>
             </motion.div>
+            <p className="mt-4 text-sm text-slate-500">
+              Need a hand choosing?{" "}
+              <Link href="/#kit-finder" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
+                Open the Kit Finder
+              </Link>{" "}
+              or{" "}
+              <Link href="/#contact" className="font-semibold text-amber-800 underline-offset-2 hover:underline">
+                talk with us
+              </Link>
+              .
+            </p>
           </div>
           <motion.div
             className="relative flex flex-col gap-6"
@@ -103,28 +117,31 @@ export function HeroSection() {
               <HeroScene />
             </div>
             <div className={cn(cardSurface(), "rounded-3xl p-5 shadow-lg shadow-slate-900/10 sm:p-6")}>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Live desk</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Today’s learning loop</p>
               <p className="mt-2 text-base font-semibold leading-snug text-slate-900 sm:text-lg">
-                Orders · tracking · copilot—one stack for procurement and learners.
+                One mission, one proof, one reflection—then tomorrow’s step unlocks.
               </p>
               <div className="mt-4 grid gap-2 text-sm text-slate-600 sm:grid-cols-3">
                 <Link
-                  href="/orders"
-                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200"
+                  href="/#daily-missions"
+                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                 >
-                  Manage orders
+                  Today’s mission
                 </Link>
                 <Link
-                  href="/track"
-                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200"
+                  href="/#kit-finder"
+                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                 >
-                  Track status
+                  Kit Finder
                 </Link>
                 <Link
-                  href="/#platform"
-                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200"
+                  href="/#portfolio-proof"
+                  className="rounded-xl border border-slate-100 bg-stone-50 px-3 py-2 font-medium text-slate-900 hover:border-amber-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                 >
-                  Platform tour
+                  <span className="inline-flex items-center gap-1.5">
+                    <Images className="h-4 w-4 shrink-0" aria-hidden />
+                    Proof & portfolio
+                  </span>
                 </Link>
               </div>
             </div>

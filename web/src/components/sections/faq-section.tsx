@@ -5,19 +5,19 @@ import { SectionHeading } from "@/components/section-heading";
 const faqs = [
   {
     q: "What ships in each kit?",
-    a: "Every SKU lists physical components, challenge decks, QR-linked journeys, and AI touchpoints—no opaque bundles.",
+    a: "Every kit lists physical components, challenge decks, QR-linked journeys, and AI touchpoints—transparent manifests, no opaque bundles.",
   },
   {
     q: "How do tracking and orders work today?",
-    a: "Track uses your order ID + email (demo lookup until your OMS webhooks land). Orders shows a browser-based desk preview—swap in auth when ready.",
+    a: "Track uses your order ID and email on file (demo lookup here—your team can wire production systems later). Orders shows a preview desk today and can plug into accounts when you’re ready.",
   },
   {
     q: "Can districts standardize across schools?",
-    a: "Yes—use Support with cohort sizes and timelines. We stage waves, spares, and educator enablement in the same motion as classroom pilots.",
+    a: "Yes—tell us cohort sizes and timelines in Support. We stage waves, spare parts, and educator enablement alongside classroom pilots.",
   },
   {
-    q: "What does the copilot handle?",
-    a: "Logistics, kit fit, and rollout questions with short answers. It routes to humans for quotes, legal, and custom SKUs.",
+    q: "What does the copilot help with?",
+    a: "Short answers for kit fit, rollouts, and day-to-day questions. It hands off to humans for quotes, legal, and custom kit waves.",
   },
 ] as const;
 
